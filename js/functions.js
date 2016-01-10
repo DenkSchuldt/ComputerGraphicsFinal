@@ -7,6 +7,7 @@ var cornerX = new Array();
 var cornerY = new Array();
 var paint;
 var dist_prom = 0;
+var figura_cerrada = 0;
 
 function Point(x, y) {
   this.x = x;
@@ -88,6 +89,11 @@ function resample(resample_number) {
 	newClickY.push( clickY[ clickY.length- 1 ] );
   }
   console.log(newClickX.length);
+  if(distance(clickX[0], clickY[0], clickX[clickX.length - 1], clickY[clickY.length - 1]) < 3*distanciaPromedio){
+	figura_cerrada = 1;
+  }else{
+	figura_cerrada = 0;
+  }
 }
 
 /**
@@ -172,9 +178,9 @@ $('#canvas_2d').mouseup(function(e){
   redraw2();
   leaveCorners();
   //redrawCorners();
-  if(cornerX.length == 3){
+  if(cornerX.length == 3 && figura_cerrada){
 	console.log('Es un Triangulo');
-  }else if(cornerX.length == 4){
+  }else if(cornerX.length == 4 && figura_cerrada){
 	console.log('Es un Quadrangulo');
   }
 });
