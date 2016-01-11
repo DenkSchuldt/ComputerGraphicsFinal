@@ -32,3 +32,49 @@ html, body {
     cursor: pointer;
     border-bottom: 1px solid rgba(0,0,0,0.23);
   }
+
+.options {
+  font-size: 1.5em;
+  margin: 10px;
+  position: fixed;
+  right: 0;
+  cursor: pointer;
+}
+
+.colors {
+  display: none;
+  position: fixed;
+  right: 0;
+  margin: 25px;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.color {
+  width: 24px;
+  height: 24px;
+  border-radius: 14px;
+  display: inline-block;
+  border: 2px solid white;
+  cursor: pointer;
+}
+.red {background-color: #F44336}
+.pink {background-color: #E91E63}
+.purple {background-color: #9C27B0}
+.deeppurple {background-color: #673AB7}
+.indigo {background-color: #3F51B5}
+.blue {background-color: #2196F3}
+.lightblue {background-color: #03A9F4}
+.cyan {background-color: #00BCD4}
+.teal {background-color: #009688}
+.green {background-color: #4CAF50}
+.lightgreen {background-color: #8BC34A}
+.lime {background-color: #CDDC39}
+.yellow {background-color: #FFEB3B}
+.amber {background-color: #FFC107}
+.orange {background-color: #FF9800}
+.deeporange {background-color: #FF5722}
+.brown {background-color: #795548}
+.gray {background-color: #9E9E9E}
+.black {background-color: #000000}

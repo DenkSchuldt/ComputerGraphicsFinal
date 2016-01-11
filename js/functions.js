@@ -1,4 +1,27 @@
 
+var colors = {
+  "red": "#F44336",
+  "pink": "#E91E63",
+  "purple": "#9C27B0",
+  "deeppurple": "#673AB7",
+  "indigo": "#3F51B5",
+  "blue": "#2196F3",
+  "lightblue": "#03A9F4",
+  "cyan": "#00BCD4",
+  "teal": "#009688",
+  "green": "#4CAF50",
+  "lightgreen": "#8BC34A",
+  "lime": "#CDDC39",
+  "yellow": "#FFEB3B",
+  "amber": "#FFC107",
+  "orange": "#FF9800",
+  "deeporange": "#FF5722",
+  "brown": "#795548",
+  "gray": "#9E9E9E",
+  "black": "#000000"
+}
+
+var main_color;
 var clickX = new Array();
 var clickY = new Array();
 var newClickX = new Array();
@@ -42,12 +65,12 @@ function leaveCorners(){
 		  dot_product = 180 - dot_product;
 		}
 		distancia_punto_anterior = distance(cornerX[cornerX.length-1], cornerY[cornerY.length - 1], newClickX[i], newClickY[i])
-		
+
 		if(dot_product > 35 && distancia_punto_anterior > 2*dist_prom){
 			cornerX.push(newClickX[i]);
 			cornerY.push(newClickY[i]);
 		}
-		
+
 	}
 }
 
@@ -58,7 +81,7 @@ function resample(resample_number) {
   var distanciaAvance = 0; //distancia acumulada en el resampling
   newClickX = [];
   newClickY = [];
-  
+
   // REMOVE PREVIOUS SKETCH
 
   for (i = 1; i < clickX.length; i++) {
@@ -101,12 +124,12 @@ function resample(resample_number) {
  */
 function redraw() {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  context.strokeStyle = "#df4b26";
+  context.strokeStyle = main_color;
   context.lineWidth = 1;
   for(var i=0; i < clickX.length; i++) {
     context.beginPath();
     context.arc(clickX[i],clickY[i],1,0,2*Math.PI);
-    context.fillStyle = "#df4b26";
+    context.fillStyle = main_color;
     context.fill();
     context.closePath();
     context.stroke();
@@ -115,12 +138,12 @@ function redraw() {
 
 function redraw2() {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  context.strokeStyle = "#df4b26";
+  context.strokeStyle = main_color;
   context.lineWidth = 1;
   for(var i=0; i < newClickX.length; i++) {
     context.beginPath();
     context.arc(newClickX[i],newClickY[i],1,0,2*Math.PI);
-    context.fillStyle = "#df4b26";
+    context.fillStyle = main_color;
     context.fill();
     context.closePath();
     context.stroke();
@@ -129,12 +152,12 @@ function redraw2() {
 
 function redrawCorners() {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  context.strokeStyle = "#df4b26";
+  context.strokeStyle = main_color;
   context.lineWidth = 1;
   for(var i=0; i < cornerX.length; i++) {
     context.beginPath();
     context.arc(cornerX[i],cornerY[i],1,0,2*Math.PI);
-    context.fillStyle = "#df4b26";
+    context.fillStyle = main_color;
     context.fill();
     context.closePath();
     context.stroke();
@@ -189,15 +212,34 @@ $('#canvas_2d').mouseup(function(e){
  *
  */
 function init() {
+
+  main_color = "#F44336";
+  context = document.getElementById('canvas_2d').getContext("2d");
+
   $("#canvas_2d").attr("width", $("#canvas_2d").width());
   $("#canvas_2d").attr("height", $("#canvas_2d").height());
-  context = document.getElementById('canvas_2d').getContext("2d");
+
 
   window.addEventListener('resize', function() {
     $("#canvas_2d").attr("width", $("#canvas_2d").width());
     $("#canvas_2d").attr("height", $("#canvas_2d").height());
     redraw();
   });
+
+  $('.options').click(function() {
+    $('.colors').toggle('drop');
+  });
+  $('.color').hover(
+    function(){
+      $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
+    }, function() {
+      $(this).attr('style', 'border: 2px solid white');
+  });
+  $('.color').click(function(){
+    main_color = $(this).css('background-color');
+    $('.colors').toggle('drop');
+  });
+
 }
 
 init();
