@@ -1,28 +1,147 @@
 
-var points = new Array();
+var colors = {
+  "red": "#F44336",
+  "pink": "#E91E63",
+  "purple": "#9C27B0",
+  "deeppurple": "#673AB7",
+  "indigo": "#3F51B5",
+  "blue": "#2196F3",
+  "lightblue": "#03A9F4",
+  "cyan": "#00BCD4",
+  "teal": "#009688",
+  "green": "#4CAF50",
+  "lightgreen": "#8BC34A",
+  "lime": "#CDDC39",
+  "yellow": "#FFEB3B",
+  "amber": "#FFC107",
+  "orange": "#FF9800",
+  "deeporange": "#FF5722",
+  "brown": "#795548",
+  "gray": "#9E9E9E",
+  "black": "#000000"
+}
+
 var paint;
+var main_color;
+var dist_prom = 0;
+var figura_cerrada = false;
+var points = new Array();
+var corners = new Array();
+var resampledPoints = new Array();
 
 /**
  *
  */
-function addClick(coordX, coordY) {
-  points.push({x:coordX, y:coordY});
+function newPoint(x, y) {
+  var point = {};
+  point.x = x;
+  point.y = y;
+  return point;
 }
 
 /**
  *
  */
-function redraw() {
+function getDistance(pointA, pointB) {
+	return Math.sqrt(Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2));
+}
+
+/**
+ *
+ */
+function getCorners() {
+  corners = new Array();
+	corners.push(resampledPoints[0]);
+	for (i = 1; i < resampledPoints.length - 1; i++) {
+		var p1 = newPoint(resampledPoints[i-1].x, resampledPoints[i-1].y);
+		var p2 = newPoint(resampledPoints[i].x, resampledPoints[i].y);
+		var p3 = newPoint(resampledPoints[i+1].x, resampledPoints[i+1].y);
+		var v1 = newPoint(p2.x - p1.x, p2.y - p1.y);
+		var v2 = newPoint(p3.x - p2.x, p3.y - p2.y);
+		var dot_product = Math.acos((v1.x*v2.x + v1.y*v2.y)/(Math.sqrt(v1.x*v1.x + v1.y*v1.y)*Math.sqrt(v2.x*v2.x + v2.y*v2.y)))* (180/Math.PI);
+		if (dot_product > 90){
+		  dot_product = 180 - dot_product;
+		}
+		distancia_punto_anterior = getDistance(corners[corners.length-1], resampledPoints[i]);
+		if(dot_product > 35 && distancia_punto_anterior > 2*dist_prom) {
+      var point = newPoint(resampledPoints[i].x, resampledPoints[i].y);
+			corners.push(point);
+		}
+	}
+}
+
+/**
+ *
+ */
+function resample(resample_number) {
+  var distanciaTotal = 0; //Distancia total del trazo
+  var distanciaPromedio = 0; //distancia promedio para equi-espaciar los puntos
+  var distancia = 0; //distancia entre 2 puntos
+  var distanciaAvance = 0; //distancia acumulada en el resampling
+  resampledPoints = new Array();
+
+  for (i = 1; i < points.length; i++) {
+    distanciaTotal += getDistance(points[i-1], points[i]);
+  }
+
+  distanciaPromedio = distanciaTotal/(resample_number - 1);
+  dist_prom = distanciaPromedio;
+
+  resampledPoints.push(points[0]);
+
+  for (i = 1; i < points.length; i++) {
+    distancia = getDistance(points[i-1], points[i]);
+    if( (distanciaAvance + distancia) >= distanciaPromedio ) {
+      var resampledPoint = newPoint(0, 0);
+      resampledPoint.x = points[i-1].x + ((distanciaPromedio - distanciaAvance)/distancia)*(points[i].x-points[i-1].x);
+      resampledPoint.y = points[i-1].y + ((distanciaPromedio - distanciaAvance)/distancia)*(points[i].y-points[i-1].y);
+      resampledPoints.push(resampledPoint);
+      points.splice(i, 0, resampledPoint);
+      distanciaAvance = 0;
+    } else {
+      distanciaAvance += distancia;
+    }
+  }
+
+  if(resampledPoints.length < resample_number){
+    resampledPoints.push(points[points.length-1]);
+  }
+
+  if(getDistance(points[0], points[points.length-1]) < 3*distanciaPromedio){
+	   figura_cerrada = true;
+  } else {
+	   figura_cerrada = false;
+  }
+}
+
+/**
+ *
+ */
+function redraw(src) {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  context.strokeStyle = "#df4b26";
+  context.strokeStyle = main_color;
   context.lineWidth = 1;
-  for(var i=0; i < points.length; i++) {
-    context.beginPath();
-    context.arc(points[i].x, points[i].y, 1, 0, 2*Math.PI);
-    context.fillStyle = "#df4b26";
-    context.fill();
-    context.closePath();
-    context.stroke();
+  switch (src) {
+    case 1:
+      for(var i=0; i < points.length; i++) {
+        context.beginPath();
+        context.arc(points[i].x,points[i].y,1,0,2*Math.PI);
+        context.fillStyle = main_color;
+        context.fill();
+        context.closePath();
+        context.stroke();
+      }
+      break;
+    case 2:
+      for(var i=0; i < resampledPoints.length; i++) {
+        context.beginPath();
+        context.arc(resampledPoints[i].x,resampledPoints[i].y,1,0,2*Math.PI);
+        context.fillStyle = main_color;
+        context.fill();
+        context.closePath();
+        context.stroke();
+      }
+      break;
   }
 }
 
@@ -30,25 +149,27 @@ function redraw() {
  *
  */
 $('#canvas_2d').mousedown(function(e) {
+  paint = true;
+  points = new Array();
   var offset = $(this).offset();
   var relX = e.pageX - offset.left;
   var relY = e.pageY - offset.top;
-  paint = true;
-  addClick(relX, relY);
-  redraw();
+  var point = newPoint(relX, relY);
+  points.push(point);
+  redraw(1);
 });
 
 /**
  *
  */
 $('#canvas_2d').mousemove(function(e) {
-  var x, y;
   if(paint) {
     var offset = $(this).offset();
     var relX = e.pageX - offset.left;
     var relY = e.pageY - offset.top;
-    addClick(relX, relY, true);
-    redraw();
+    var point = newPoint(relX, relY);
+    points.push(point);
+    redraw(1);
   }
 });
 
@@ -57,21 +178,48 @@ $('#canvas_2d').mousemove(function(e) {
  */
 $('#canvas_2d').mouseup(function(e) {
   paint = false;
+  resample(64);
+  redraw(2);
+  getCorners();
+  if(corners.length == 3 && figura_cerrada) {
+	   console.log('Es un Triangulo');
+  } else if(corners.length == 4 && figura_cerrada) {
+	   console.log('Es un Quadrangulo');
+  }
 });
 
 /**
  *
  */
 function init() {
+
+  main_color = "#F44336";
+  context = document.getElementById('canvas_2d').getContext("2d");
+
   $("#canvas_2d").attr("width", $("#canvas_2d").width());
   $("#canvas_2d").attr("height", $("#canvas_2d").height());
-  context = document.getElementById('canvas_2d').getContext("2d");
+
 
   window.addEventListener('resize', function() {
     $("#canvas_2d").attr("width", $("#canvas_2d").width());
     $("#canvas_2d").attr("height", $("#canvas_2d").height());
-    redraw();
+    redraw(2);
   });
+
+  $('.options').click(function() {
+    $('.colors').toggle('drop');
+  });
+  $('.color').hover(
+    function(){
+      $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
+    }, function() {
+      $(this).attr('style', 'border: 2px solid white');
+  });
+  $('.color').click(function(){
+    main_color = $(this).css('background-color');
+    $('.colors').toggle('drop');
+  });
+
 }
 
 init();
