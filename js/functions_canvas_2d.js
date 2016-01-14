@@ -22,12 +22,25 @@ var colors = {
 }
 
 var paint;
+var context;
 var main_color;
 var dist_prom = 0;
 var figura_cerrada = false;
 var points = new Array();
 var corners = new Array();
 var resampledPoints = new Array();
+
+
+/**
+ * src: http://javascriptexample.net/extobjects81.php
+ */
+Math.avg = function() {
+  var cnt, tot, i;
+  cnt = arguments.length;
+  tot = i = 0;
+  while (i < cnt) tot+= arguments[i++];
+  return tot / cnt;
+}
 
 /**
  *
@@ -68,6 +81,26 @@ function getCorners() {
 			corners.push(point);
 		}
 	}
+}
+
+/**
+ *
+ */
+function isOval() {
+  var distances = new Array();
+  var point = newPoint(0,0);
+  for (var i = 0; i < resampledPoints.length; i++) {
+    point.x += resampledPoints[i].x;
+    point.y += resampledPoints[i].y;
+  }
+  point.x = point.x/resampledPoints.length;
+  point.y = point.y/resampledPoints.length;
+  for (var i = 0; i < resampledPoints.length; i++) {
+    distances.push(getDistance(point, resampledPoints[i]));
+  }
+  console.log(Math.max.apply(Math, distances));
+  console.log(Math.min.apply(Math, distances));
+  console.log(Math.avg.apply(Math, distances));
 }
 
 /**
@@ -186,6 +219,7 @@ $('#canvas_2d').mouseup(function(e) {
   } else if(corners.length == 4 && figura_cerrada) {
 	   console.log('Es un Quadrangulo');
   }
+  isOval();
 });
 
 /**
