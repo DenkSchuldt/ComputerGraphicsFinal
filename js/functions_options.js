@@ -42,14 +42,14 @@ function showQuadrangleOptions(){
 	imagen1.addEventListener("click", function(){ drawQuadrangle(1); });
 	document.getElementById("options").appendChild(imagen1);
 	
-	var imagen2 = document.createElement("img");
+	/*var imagen2 = document.createElement("img");
 	imagen2.setAttribute("src", "images/cuadrilatero2.png");
 	imagen2.setAttribute("height", "200");
 	imagen2.setAttribute("width", "200");
 	imagen2.setAttribute("alt", "cuadrilatero 2");
 	imagen2.style.cursor = "pointer";
 	imagen2.addEventListener("click", function(){ drawQuadrangle(2); });
-	document.getElementById("options").appendChild(imagen2);
+	document.getElementById("options").appendChild(imagen2);*/
 	
 	var imagen3 = document.createElement("img");
 	imagen3.setAttribute("src", "images/cuadrilatero3.png");

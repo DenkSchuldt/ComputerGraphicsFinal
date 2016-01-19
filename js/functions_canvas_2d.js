@@ -76,7 +76,7 @@ function getCorners() {
 		  dot_product = 180 - dot_product;
 		}
 		distancia_punto_anterior = getDistance(corners[corners.length-1], resampledPoints[i]);
-		if(dot_product > 45 && distancia_punto_anterior > 2*dist_prom) {
+		if(dot_product > 35 && distancia_punto_anterior > 5*dist_prom) {
       var point = newPoint(resampledPoints[i].x, resampledPoints[i].y);
 			corners.push(point);
 		}
