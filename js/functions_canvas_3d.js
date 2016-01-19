@@ -97,20 +97,54 @@ function createAxis( src, dst, colorHex, dashed) {
 }
 
 function drawQuadrangle(quadrangleType){
-	var geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
-	var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-	var cube = new THREE.Mesh(geometry, material);
-	scene.add(cube);
+
+	if (quadrangleType == 1){
+		var geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
+		var material = new THREE.MeshBasicMaterial({color: main_color});
+		var cube = new THREE.Mesh(geometry, material);
+		scene.add(cube);
+	}else if (quadrangleType == 3){
+		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var pyramid = new THREE.Mesh( geometry, material );
+		pyramid.position.y += 1;
+		scene.add( pyramid );
+		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var pyramid = new THREE.Mesh( geometry, material );
+		pyramid.rotation.x += 3.1416;
+		pyramid.position.y -= 1;
+		scene.add( pyramid );
+	}else if (quadrangleType == 4){
+		var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color, side: THREE.DoubleSide} );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.rotation.x += 3.1416/2;
+		scene.add( plane );
+	}
 
 	clearOptions();
 	clearCanvas2D();
 }
 
 function drawTriangle(triangleType){
-	var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
-	var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-	var pyramid = new THREE.Mesh( geometry, material );
-	scene.add( pyramid );
+	
+	if (triangleType == 2){
+		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var pyramid = new THREE.Mesh( geometry, material );
+		scene.add( pyramid );
+	}else if (triangleType == 3){
+		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var pyramid = new THREE.Mesh( geometry, material );
+		scene.add( pyramid );
+	}else if (triangleType == 1){
+		var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var pyramid = new THREE.Mesh( geometry, material );
+		scene.add( pyramid );
+	}
 }
 
 initialize();
