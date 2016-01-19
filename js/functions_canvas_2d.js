@@ -76,7 +76,7 @@ function getCorners() {
 		  dot_product = 180 - dot_product;
 		}
 		distancia_punto_anterior = getDistance(corners[corners.length-1], resampledPoints[i]);
-		if(dot_product > 35 && distancia_punto_anterior > 2*dist_prom) {
+		if(dot_product > 45 && distancia_punto_anterior > 2*dist_prom) {
       var point = newPoint(resampledPoints[i].x, resampledPoints[i].y);
 			corners.push(point);
 		}
@@ -182,6 +182,7 @@ function redraw(src) {
  *
  */
 $('#canvas_2d').mousedown(function(e) {
+  clearOptions();
   paint = true;
   points = new Array();
   var offset = $(this).offset();
@@ -216,8 +217,10 @@ $('#canvas_2d').mouseup(function(e) {
   getCorners();
   if(corners.length == 3 && figura_cerrada) {
 	   console.log('Es un Triangulo');
+	   showTriangleOptions();
   } else if(corners.length == 4 && figura_cerrada) {
 	   console.log('Es un Quadrangulo');
+	   showQuadrangleOptions();
   }
   isOval();
 });
@@ -254,6 +257,12 @@ function init() {
     $('.colors').toggle('drop');
   });
 
+}
+
+function clearCanvas2D(){
+	points = new Array();
+	resampledPoints = new Array();
+	redraw(1);
 }
 
 init();
