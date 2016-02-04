@@ -1,5 +1,25 @@
-function showTriangleOptions(){
 
+
+/**
+ * Displays a draggable circle in the options area.
+ */
+function showCircleOption() {
+	$("#options").html('');
+	var img = document.createElement("img");
+	$(img).attr('figure', 1);
+	$(img).attr('id', 1);
+	$(img).attr('src', "images/circle.png");
+	$(img).attr('width', 150);
+	$(img).attr('height', 150);
+	$(img).attr('alt', 'Círculo');
+	$(img).css('cursor', 'pointer');
+	$(img).draggable();
+	$('#options').append(img);
+}
+
+
+
+function showTriangleOptions(){
 	document.getElementById("options").innerHTML = "";
 	var imagen1 = document.createElement("img");
 	imagen1.setAttribute('figure', 1);
@@ -11,7 +31,7 @@ function showTriangleOptions(){
 	imagen1.style.cursor = "pointer";
 	$(imagen1).draggable();
 	document.getElementById("options").appendChild(imagen1);
-	
+
 	var imagen2 = document.createElement("img");
 	imagen2.setAttribute('figure', 1);
 	imagen2.setAttribute('id', 2);
@@ -22,7 +42,7 @@ function showTriangleOptions(){
 	imagen2.style.cursor = "pointer";
 	$(imagen2).draggable();
 	document.getElementById("options").appendChild(imagen2);
-	
+
 	var imagen3 = document.createElement("img");
 	imagen3.setAttribute('figure', 1);
 	imagen3.setAttribute('id', 3);
@@ -50,7 +70,7 @@ function showQuadrangleOptions(){
 	//imagen1.addEventListener("click", function(){ drawQuadrangle(1); });
 	$(imagen1).draggable();
 	document.getElementById("options").appendChild(imagen1);
-	
+
 	var imagen3 = document.createElement("img");
 	imagen3.setAttribute('figure', 2);
 	imagen3.setAttribute('id', 3);
@@ -61,7 +81,7 @@ function showQuadrangleOptions(){
 	imagen3.style.cursor = "pointer";
 	$(imagen3).draggable();
 	document.getElementById("options").appendChild(imagen3);
-	
+
 	var imagen4 = document.createElement("img");
 	imagen4.setAttribute('figure', 2);
 	imagen4.setAttribute('id', 4);
@@ -78,5 +98,3 @@ function showQuadrangleOptions(){
 function clearOptions(){
 	document.getElementById("options").innerHTML = "";
 }
-
-

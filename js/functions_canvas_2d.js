@@ -21,6 +21,10 @@ var colors = {
   "black": "#000000"
 }
 
+// THRESHOLD
+var CIRCLE_VARIANCE_MAX = 40;
+
+// Variables
 var paint;
 var context;
 var main_color;
@@ -30,7 +34,6 @@ var figura_cerrada = false;
 var points = new Array();
 var corners = new Array();
 var resampledPoints = new Array();
-
 
 /**
  * src: http://javascriptexample.net/extobjects81.php
@@ -87,8 +90,8 @@ function getCorners() {
 /**
  *
  */
-function isOval() {
-  var distances = new Array();
+function isCircle() {
+  var radiuses = new Array();
   var point = newPoint(0,0);
   for (var i = 0; i < resampledPoints.length; i++) {
     point.x += resampledPoints[i].x;
@@ -97,11 +100,12 @@ function isOval() {
   point.x = point.x/resampledPoints.length;
   point.y = point.y/resampledPoints.length;
   for (var i = 0; i < resampledPoints.length; i++) {
-    distances.push(getDistance(point, resampledPoints[i]));
+    radiuses.push(getDistance(point, resampledPoints[i]));
   }
-  console.log(Math.max.apply(Math, distances));
-  console.log(Math.min.apply(Math, distances));
-  console.log(Math.avg.apply(Math, distances));
+  if (Math.pow(math.std(radiuses), 2) < CIRCLE_VARIANCE_MAX) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -221,14 +225,16 @@ $('#canvas_2d').mouseup(function(e) {
   resample(64);
   redraw(2);
   getCorners();
-  if(corners.length == 3 && figura_cerrada) {
-	   console.log('Es un Triangulo');
-	   showTriangleOptions();
+  if (isCircle()) {
+    console.log('Es un círculo');
+    showCircleOption();
+  } else if(corners.length == 3 && figura_cerrada) {
+	  console.log('Es un Triangulo');
+	  showTriangleOptions();
   } else if(corners.length == 4 && figura_cerrada) {
-	   console.log('Es un Quadrangulo');
-	   showQuadrangleOptions();
+	  console.log('Es un Quadrangulo');
+	  showQuadrangleOptions();
   }
-  isOval();
 });
 
 /**
