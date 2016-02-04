@@ -24,6 +24,7 @@ var colors = {
 var paint;
 var context;
 var main_color;
+var line_height;
 var dist_prom = 0;
 var figura_cerrada = false;
 var points = new Array();
@@ -166,13 +167,18 @@ function redraw(src) {
       }
       break;
     case 2:
+        var previousPoint;
       for(var i=0; i < resampledPoints.length; i++) {
-        context.beginPath();
-        context.arc(resampledPoints[i].x,resampledPoints[i].y,1,0,2*Math.PI);
-        context.fillStyle = main_color;
-        context.fill();
-        context.closePath();
+        var currentPoint = resampledPoints[i];
+        if (i > 0) {
+          context.beginPath();
+          context.lineWidth = line_height;
+          context.moveTo(previousPoint.x, previousPoint.y);
+          context.lineTo(currentPoint.x, currentPoint.y);
+          context.closePath();
+        }
         context.stroke();
+        previousPoint = currentPoint;
       }
       break;
   }
@@ -230,12 +236,12 @@ $('#canvas_2d').mouseup(function(e) {
  */
 function init() {
 
+  line_height = 4;
   main_color = "#F44336";
   context = document.getElementById('canvas_2d').getContext("2d");
 
   $("#canvas_2d").attr("width", $("#canvas_2d").width());
   $("#canvas_2d").attr("height", $("#canvas_2d").height());
-
 
   window.addEventListener('resize', function() {
     $("#canvas_2d").attr("width", $("#canvas_2d").width());
@@ -254,6 +260,7 @@ function init() {
   });
   $('.color').click(function(){
     main_color = $(this).css('background-color');
+    context.fillStyle = main_color;
     $('.colors').toggle('drop');
   });
 
