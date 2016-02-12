@@ -25,19 +25,11 @@ function initialize() {
 	camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
 	camera.position.set(10,10,10);
 	camera.lookAt(scene.position);
-	/*scene.add( new THREE.GridHelper( 500, 100 ) );*/
 	scene.add(camera);
 
 	control = new THREE.TransformControls( camera, renderer.domElement );
-	control.addEventListener( 'change', animate );
 	scene.add(control);
-
-
 	window.addEventListener( 'mousedown', onMouseDown );
-	window.addEventListener( 'mouseup', onMouseUp );
-	window.addEventListener( 'mousemove', onMouseMove);
-	window.addEventListener( 'click', onMouseClick);
-
 	window.addEventListener('resize', function() {
 		WIDTH = window.innerWidth*6/10;
 		HEIGHT = window.innerHeight;
@@ -50,12 +42,8 @@ function initialize() {
 
 	var ambientLight = new THREE.AmbientLight(0x999999);
 	scene.add(ambientLight);
-	
-		
-	
 	renderer.shadowMapEnabled = true;
 	renderer.shadowMapType = THREE.PCFSoftShadowMap;
-
 	scene.add(createAxes(3, 0, 0, 0, true));
 
 }
@@ -63,17 +51,7 @@ function initialize() {
 function animate() {
 	requestAnimationFrame(animate);
 	control.update();
-
 	renderer.render(scene, camera);
-
-	//sceneHelpers.updateMatrixWorld();
-	scene.updateMatrixWorld();
-	renderer.clear();
-	renderer.render( scene, camera );
-	/*if ( renderer instanceof THREE.RaytracingRenderer === false ) {
-		renderer.render( sceneHelpers, camera );
-	}*/
-	
 }
 
 /**
@@ -82,10 +60,6 @@ function animate() {
 function createAxes(longLine, xOrigin, yOrigin, zOrigin, haveNegativeAxes) {
 	var arrayAxes = [];
 	var axes = new THREE.Object3D();
-	/*var axes = new THREE.Group();
-	var xAxis = new THREE.Group();
-	var yAxis = new THREE.Group();
-	var zAxis = new THREE.Group();*/
 	// X Axis
 	//xAxis.name = "xAxis";
 	arrayAxes.push(createAxis(
@@ -129,9 +103,6 @@ function createAxes(longLine, xOrigin, yOrigin, zOrigin, haveNegativeAxes) {
 		));
 	}
 	axes.name = "axes";
-	/*axes.add(xAxis);
-	axes.add(yAxis);
-	axes.add(zAxis);*/
 	axes.children = arrayAxes;
 	return axes;
 }
@@ -199,7 +170,6 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		cube.position.z = pos.z;
 		cube.position.y = 0;
 		scene.add(cube);
-		control.attach(cube);
 		objects.push(cube);
 	}else if (quadrangleType == 3){
 		var rombo = new THREE.Object3D();
@@ -212,7 +182,6 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid.position.y = 0;
 		pyramid.position.y += 1;
 		scene.add( pyramid );
-		control.attach(pyramid);
 		objects.push(pyramid);
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
 		var material = new THREE.MeshLambertMaterial( {color: main_color} );
@@ -223,15 +192,14 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid2.rotation.x += 3.1416;
 		pyramid2.position.y -= 1;
 		
-		rombo.add(pyramid)
-		rombo.add(pyramid2)
+		rombo.add(pyramid);
+		rombo.add(pyramid2);
 		
 		rombo.position.x = pos.x;
 		rombo.position.z = pos.z;
 		rombo.position.y = 0;
 		
 		scene.add(rombo);
-		control.attach(rombo);
 		objects.push(rombo);
 	}else if (quadrangleType == 4){
 		var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
@@ -242,7 +210,6 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		plane.position.y = 0;
 		plane.rotation.x += 3.1416/2;
 		scene.add( plane );
-		control.attach(plane);
 		objects.push(plane);
 	}
 
@@ -275,7 +242,6 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
-		control.attach(pyramid);
 		objects.push(pyramid);
 	}else if (triangleType == 3){
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
@@ -285,7 +251,6 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
-		control.attach(pyramid);
 		objects.push(pyramid);
 	}else if (triangleType == 1){
 		var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
@@ -295,7 +260,6 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
-		control.attach(pyramid);
 		objects.push(pyramid);
 	}
 	
@@ -328,7 +292,6 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		sphere.position.z = pos.z;
 		sphere.position.y = 0;
 		scene.add(sphere);
-		control.attach(sphere);
 		objects.push(sphere);
 	}else if (circleType == 2){
 		var lightbulb = new THREE.Object3D();
@@ -354,7 +317,6 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		lightbulb.position.z = pos.z;
 		lightbulb.position.y = 5;
 		scene.add(lightbulb);
-		control.attach(lightbulb);
 		objects.push(lightbulb);
 		for (i = 0; i < objects.length; i++){
 			if (objects[i].children.length > 0){
@@ -392,7 +354,6 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		sunRay.position.z = pos.z;
 		sunRay.position.y = 5;
 		scene.add(sunRay);
-		control.attach(sunRay);
 		objects.push(sunRay);
 		for (i = 0; i < objects.length; i++){
 			if (objects[i].children.length > 0){
@@ -419,18 +380,20 @@ function drawSphereByPosition(circleType, imagex, imagey){
 function changeToNextState(actualState){
 	if (actualState == states[0]){
 		console.log("Ahora Rotando");
+		control.setMode("rotate");
 		return states[1];
 	}else if (actualState == states[1]){
 		console.log("Ahora Escalando");
+		control.setMode("scale");
 		return states[2];
 	}else{
 		console.log("Moviendo de Vuelta");
+		control.setMode("translate");
 		return states[0];
 	}
 }
 
-function onMouseClick(e){
-	var axes = new THREE.Object3D();
+function onMouseDown( e ) {
 	mouseVector.x = 2 * (e.clientX / (window.innerWidth*0.6)) - 1;
 	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
 	raycaster.setFromCamera( mouseVector, camera );
@@ -438,105 +401,27 @@ function onMouseClick(e){
 	if (intersectsMouse.length>0){
 		obj = intersectsMouse[0].object;
 		if (selected.length==0){
-			axes = createAxes(1, obj.position.x, obj.position.y, obj.position.z, false);
-			obj.add(axes);
-			obj.name = "shape" ;
-			selected.push(obj);
 			actualState = states[0];
+			control.setMode("translate");
+			control.attach(obj);
+			selected.push(obj);
 		}else if(selected[0]!=obj){
-			selected[0].remove(selected[0].getObjectByName("axes"));
+			control.detach();
 			selected.pop();
-			axes = createAxes(1, obj.position.x, obj.position.y, obj.position.z, false);
-			obj.add(axes);
-			obj.name = "shape" ;
-			selected.push(obj);
 			actualState = states[0];
+			control.setMode("translate");
+			control.attach(obj);
+			selected.push(obj);
 		}else{
 			actualState = changeToNextState(actualState);
 		}
-		obj.material.color.setRGB(Math.random()*2, Math.random()*2, Math.random()*2);
 	}else{
 		if (selected.length>0){
-			selected[0].remove(selected[0].getObjectByName("axes"));
+			control.detach();
 			selected.pop();
+			control.update();
 		}
 	}
-}
-
-function onMouseDown( e ) {
-	mouseVector.x = 2 * (e.clientX /(window.innerWidth*0.6)) - 1;
-	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight );
-	mouseDownVector.x = 2 * (e.clientX / (window.innerWidth*0.6)) - 1;
-	mouseDownVector.y = 1 - 2 * ( e.clientY / window.innerHeight );
-	raycaster.setFromCamera( mouseDownVector, camera );
-	intersectsMouse = raycaster.intersectObjects( objects , true);
-	if (intersectsMouse.length>0){
-		obj = intersectsMouse[0].object;
-		/*if (selected.length==0){
-			obj.add(createAxes(1, obj.position.x, obj.position.y, obj.position.z));
-			obj.name = "shape" ;
-			selected.push(obj);
-			actualState = states[0];
-		}else if(selected[0]!=obj){
-			selected[0].remove(selected[0].getObjectByName("axes"));
-			selected.pop();
-			obj.add(createAxes(1, obj.position.x, obj.position.y, obj.position.z));
-			obj.name = "shape" ;
-			selected.push(obj);
-			actualState = states[0];
-		}else{
-			actualState = changeToNextState(actualState);
-		}
-		obj.material.color.setRGB(Math.random()*2, Math.random()*2, Math.random()*2);
-		console.log('YES');*/
-	}else{
-		if (selected.length>0){
-			selected[0].remove(selected[0].getObjectByName("axes"));
-			selected.pop();
-		}
-	}
-}
-		
-
-function onMouseUp( e ) {
-	mouseUpVector.x = 2 * (e.clientX / window.innerWidth) - 1;
-	mouseUpVector.y = 1 - 2 * ( e.clientY / window.innerHeight );
-	if (mouseDownVector.x == mouseUpVector.x && mouseDownVector.y == mouseUpVector.y){
-		raycaster.setFromCamera( mouseDownVector, camera );
-		var intersects = raycaster.intersectObjects( scene , true);
-		if (intersects.length>0){
-
-		}
-	}
-	clickingTop = false;
-}
-
-
-function onMouseMove (e){
-	mouseMoveVector.x = 2 * (e.clientX / (window.innerWidth*0.6)) - 1;
-	mouseMoveVector.y = 1 - 2 * ( e.clientY / window.innerHeight );
-	if (selected.length > 0 && actualState == states[0]){
-		/*shape = selected[0].getObjectByName("shape");
-		shape.position.y = mouseMoveVector.y *10;
-		shape.position.x = mouseMoveVector.x *10;
-		if (mouseVector.x < mouseMoveVector.x && mouseVector == mouseMoveVector){
-			
-		}
-	}else if (actualState == states[1]){
-
-	}else if (actualState == states[2]){
-
-	}
-	if (mouseVector.x != mouseMoveVector.x && mouseVector.y != mouseMoveVector.y){
-		if(mouseVector.y < mouseMoveVector.y){
-
-		}
-		if(mouseVector.y > mouseMoveVector.y){
-
-		}*/
-	}
-	mouseVector.x = 2 * (e.clientX / window.innerWidth) - 1;
-	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight );
 }
 
 initialize();
