@@ -6,6 +6,9 @@
 		<script src="./js/three.min.js"></script>
 		<script src="./js/jquery-2.1.4.min.js"></script>
 		<script src="./js/jquery-ui.min.js"></script>
+
+		<script src="./js/react.min.js" type="text/babel"></script>
+		<script src="./js/react-dom.min.js" type="text/babel"></script>
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
 		<link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
 	</head>
@@ -19,7 +22,6 @@
       <div id="options">
       </div>
     </div>
-
 		<i class="fa fa-cog options"></i>
 		<div class="colors">
 			<span class="color red"></span>
@@ -42,9 +44,23 @@
 			<span class="color gray"></span>
 			<span class="color black"></span>
 		</div>
+		<div id="dialog" class="dialog"></div>
 		<script src="./js/math.min.js"></script>
 		<script src="./js/functions_canvas_2d.js"></script>
 		<script src="./js/functions_options.js"></script>
 		<script src="./js/functions_canvas_3d.js"></script>
+		<script src="./js/dialog.jsx" type="text/babel"></script>
+		<script type="text/jsx">
+/** @jsx React.DOM */
+var LikeOrNot = React.createClass({
+    render: function () {
+      return (
+        <p>Like</p>
+      );
+    }
+});
+
+React.renderComponent(<LikeOrNot />, document.getElementById('dialog'));
+</script>
 	</body>
 </html>

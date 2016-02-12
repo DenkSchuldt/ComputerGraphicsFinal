@@ -1,4 +1,8 @@
-
+function hideSteps() {
+	$("#dialog").click(function(){
+		$(this).fadeOut();
+	});
+}
 
 /**
  * Displays a draggable circle in the options area.
@@ -98,3 +102,7 @@ function showQuadrangleOptions(){
 function clearOptions(){
 	document.getElementById("options").innerHTML = "";
 }
+
+
+
+hideSteps();
