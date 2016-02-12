@@ -26,6 +26,17 @@ function showCircleOption() {
 	$(img2).css('cursor', 'pointer');
 	$(img2).draggable();
 	$('#options').append(img2);
+	
+	var img3 = document.createElement("img");
+	$(img3).attr('figure', 0);
+	$(img3).attr('id', 3);
+	$(img3).attr('src', "images/directional.png");
+	$(img3).attr('width', 150);
+	$(img3).attr('height', 150);
+	$(img3).attr('alt', 'Directional Light');
+	$(img3).css('cursor', 'pointer');
+	$(img3).draggable();
+	$('#options').append(img3);
 }
 
 

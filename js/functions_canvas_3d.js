@@ -231,6 +231,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		rombo.position.y = 0;
 		
 		scene.add(rombo);
+		control.attach(rombo);
 		objects.push(rombo);
 	}else if (quadrangleType == 4){
 		var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
@@ -355,6 +356,44 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		scene.add(lightbulb);
 		control.attach(lightbulb);
 		objects.push(lightbulb);
+		for (i = 0; i < objects.length; i++){
+			if (objects[i].children.length > 0){
+				for (j = 0; j < objects[i].children.length; j++){
+					try{
+						objects[i].children[j].material.needsUpdate = true;
+					}catch(err){
+					
+					}
+				}
+			}
+			try{
+				objects[i].material.needsUpdate = true;
+			}catch(err){
+				
+			}
+		}
+	}else if (circleType == 3){
+		var sunRay = new THREE.Object3D();
+		
+		var light = new THREE.DirectionalLight( 0xffffff, 1 );
+		
+		var geometryTuck = new THREE.CylinderGeometry( 0.25, 0.25, 0.4, 32, 1 );
+		var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
+		var tuck = new THREE.Mesh( geometryTuck, materialTuck );
+		
+		
+		tuck.position.set(0, 0, 0)
+		light.position.set(0, 0, 0)
+		
+		sunRay.add(tuck);
+		sunRay.add(light);
+		
+		sunRay.position.x = pos.x;
+		sunRay.position.z = pos.z;
+		sunRay.position.y = 5;
+		scene.add(sunRay);
+		control.attach(sunRay);
+		objects.push(sunRay);
 		for (i = 0; i < objects.length; i++){
 			if (objects[i].children.length > 0){
 				for (j = 0; j < objects[i].children.length; j++){
