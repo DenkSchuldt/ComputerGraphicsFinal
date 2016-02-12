@@ -50,7 +50,9 @@ function initialize() {
 
 	var ambientLight = new THREE.AmbientLight(0x999999);
 	scene.add(ambientLight);
-
+	
+		
+	
 	renderer.shadowMapEnabled = true;
 	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
@@ -165,6 +167,8 @@ $(function() {
 				drawTriangleByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
 			}else if (type == 2){
 				drawQuadrangleByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
+			}else if (type == 0){
+				drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
 			}
 		}
     });
@@ -189,7 +193,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 
 	if (quadrangleType == 1){
 		var geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
-		var material = new THREE.MeshBasicMaterial({color: main_color});
+		var material = new THREE.MeshLambertMaterial({color: main_color});
 		var cube = new THREE.Mesh(geometry, material);
 		cube.position.x = pos.x;
 		cube.position.z = pos.z;
@@ -198,29 +202,39 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		control.attach(cube);
 		objects.push(cube);
 	}else if (quadrangleType == 3){
+		var rombo = new THREE.Object3D();
+	
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid = new THREE.Mesh( geometry, material );
-		pyramid.position.x = pos.x;
-		pyramid.position.z = pos.z;
+		pyramid.position.x = 0;
+		pyramid.position.z = 0;
 		pyramid.position.y = 0;
 		pyramid.position.y += 1;
 		scene.add( pyramid );
 		control.attach(pyramid);
 		objects.push(pyramid);
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color} );
-		var pyramid = new THREE.Mesh( geometry, material );
-		pyramid.position.x = pos.x;
-		pyramid.position.z = pos.z;
-		pyramid.position.y = 0;
-		pyramid.rotation.x += 3.1416;
-		pyramid.position.y -= 1;
-		scene.add( pyramid );
-		objects.push(pyramid);
+		var material = new THREE.MeshLambertMaterial( {color: main_color} );
+		var pyramid2 = new THREE.Mesh( geometry, material );
+		pyramid2.position.x = 0;
+		pyramid2.position.z = 0;
+		pyramid2.position.y = 0;
+		pyramid2.rotation.x += 3.1416;
+		pyramid2.position.y -= 1;
+		
+		rombo.add(pyramid)
+		rombo.add(pyramid2)
+		
+		rombo.position.x = pos.x;
+		rombo.position.z = pos.z;
+		rombo.position.y = 0;
+		
+		scene.add(rombo);
+		objects.push(rombo);
 	}else if (quadrangleType == 4){
 		var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color, side: THREE.DoubleSide} );
+		var material = new THREE.MeshLambertMaterial( {color: main_color, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh( geometry, material );
 		plane.position.x = pos.x;
 		plane.position.z = pos.z;
@@ -254,7 +268,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 	
 	if (triangleType == 2){
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid = new THREE.Mesh( geometry, material );
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
@@ -264,7 +278,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		objects.push(pyramid);
 	}else if (triangleType == 3){
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid = new THREE.Mesh( geometry, material );
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
@@ -274,7 +288,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		objects.push(pyramid);
 	}else if (triangleType == 1){
 		var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
-		var material = new THREE.MeshBasicMaterial( {color: main_color} );
+		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid = new THREE.Mesh( geometry, material );
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
@@ -284,6 +298,81 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		objects.push(pyramid);
 	}
 	
+	clearOptions();
+	clearCanvas2D();
+}
+
+function drawSphereByPosition(circleType, imagex, imagey){
+
+	var vector = new THREE.Vector3();
+
+	vector.set(
+		( imagex / (window.innerWidth*6/10) ) * 2 - 1,
+		- ( imagey / window.innerHeight ) * 2 + 1,
+		0.5 );
+
+	vector.unproject( camera );
+
+	var dir = vector.sub( camera.position ).normalize();
+
+	var distance = - camera.position.y / dir.y;
+
+	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
+
+	if (circleType == 1){
+		var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+		var material = new THREE.MeshLambertMaterial({color: main_color});
+		var sphere = new THREE.Mesh(geometry, material);
+		sphere.position.x = pos.x;
+		sphere.position.z = pos.z;
+		sphere.position.y = 0;
+		scene.add(sphere);
+		control.attach(sphere);
+		objects.push(sphere);
+	}else if (circleType == 2){
+		var lightbulb = new THREE.Object3D();
+		
+		var light = new THREE.PointLight( 0xffffff, 2, 100 );
+		
+		var geometryTuck = new THREE.CylinderGeometry( 0.1, 0.1, 0.5, 32, 1 );
+		var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
+		var tuck = new THREE.Mesh( geometryTuck, materialTuck );
+		
+		var geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
+		var material = new THREE.MeshBasicMaterial({color: main_color});
+		var sphere = new THREE.Mesh(geometry, material);
+		
+		tuck.position.set(0, 0.15, 0)
+		light.position.set(0, 0, 0)
+		sphere.position.set(0, 0, 0)
+		
+		lightbulb.add(tuck);
+		lightbulb.add(sphere);
+		lightbulb.add(light);
+		lightbulb.position.x = pos.x;
+		lightbulb.position.z = pos.z;
+		lightbulb.position.y = 5;
+		scene.add(lightbulb);
+		control.attach(lightbulb);
+		objects.push(lightbulb);
+		for (i = 0; i < objects.length; i++){
+			if (objects[i].children.length > 0){
+				for (j = 0; j < objects[i].children.length; j++){
+					try{
+						objects[i].children[j].material.needsUpdate = true;
+					}catch(err){
+					
+					}
+				}
+			}
+			try{
+				objects[i].material.needsUpdate = true;
+			}catch(err){
+				
+			}
+		}
+	}
+
 	clearOptions();
 	clearCanvas2D();
 }
