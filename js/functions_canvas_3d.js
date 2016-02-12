@@ -9,6 +9,7 @@ var selected = [];
 var objSelected = new THREE.Object3D();
 var states = ["moving", "rotating", "scaling"];
 var actualState = "";
+var control;
 
 function initialize() {
 	scene = new THREE.Scene();
@@ -17,12 +18,20 @@ function initialize() {
 
 	renderer = new THREE.WebGLRenderer({antialias:true});
 	renderer.setSize(WIDTH, HEIGHT);
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.sortObjects = false;
 	document.getElementById("canvas_3d").appendChild(renderer.domElement);
 
 	camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
 	camera.position.set(10,10,10);
 	camera.lookAt(scene.position);
+	/*scene.add( new THREE.GridHelper( 500, 100 ) );*/
 	scene.add(camera);
+
+	control = new THREE.TransformControls( camera, renderer.domElement );
+	control.addEventListener( 'change', animate );
+	scene.add(control);
+
 
 	window.addEventListener( 'mousedown', onMouseDown );
 	window.addEventListener( 'mouseup', onMouseUp );
@@ -46,11 +55,22 @@ function initialize() {
 	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 	scene.add(createAxes(3, 0, 0, 0, true));
+
 }
 
 function animate() {
 	requestAnimationFrame(animate);
+	control.update();
+
 	renderer.render(scene, camera);
+
+	//sceneHelpers.updateMatrixWorld();
+	scene.updateMatrixWorld();
+	renderer.clear();
+	renderer.render( scene, camera );
+	/*if ( renderer instanceof THREE.RaytracingRenderer === false ) {
+		renderer.render( sceneHelpers, camera );
+	}*/
 	
 }
 
@@ -175,6 +195,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		cube.position.z = pos.z;
 		cube.position.y = 0;
 		scene.add(cube);
+		control.attach(cube);
 		objects.push(cube);
 	}else if (quadrangleType == 3){
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
@@ -185,6 +206,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid.position.y = 0;
 		pyramid.position.y += 1;
 		scene.add( pyramid );
+		control.attach(pyramid);
 		objects.push(pyramid);
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
 		var material = new THREE.MeshBasicMaterial( {color: main_color} );
@@ -205,6 +227,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		plane.position.y = 0;
 		plane.rotation.x += 3.1416/2;
 		scene.add( plane );
+		control.attach(plane);
 		objects.push(plane);
 	}
 
@@ -237,6 +260,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
+		control.attach(pyramid);
 		objects.push(pyramid);
 	}else if (triangleType == 3){
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
@@ -246,6 +270,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
+		control.attach(pyramid);
 		objects.push(pyramid);
 	}else if (triangleType == 1){
 		var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
@@ -255,6 +280,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		scene.add( pyramid );
+		control.attach(pyramid);
 		objects.push(pyramid);
 	}
 	
