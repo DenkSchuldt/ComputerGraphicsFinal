@@ -3,7 +3,35 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
+
+.navbar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 60px;
+  z-index: 100;
+  background-color: #2196F3;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+  .navbar label {
+    line-height: 60px;
+    font-size: 1.5em;
+    color: #fff;
+    height: 100%;
+    display: inline-block;
+    margin-left: 20px;
+  }
+  .navbar i {
+    line-height: 60px;
+    height: 100%;
+    cursor: pointer;
+    float: right;
+    color: #fff;
+    margin-right: 20px;
+  }
 
 #main_container {
   width: 100%;
@@ -16,49 +44,53 @@ html, body {
     height: 100%;
   }
 
-#right_container {
-  right: 0;
-  width: 40%;
-  height: 100%;
-  position: fixed;
-  background-color: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-}
+
   #canvas_2d, #options {
     width: 100%;
     height: 50%;
   }
   #canvas_2d {
-    cursor: pointer;
-    border-bottom: 1px solid rgba(0,0,0,0.23);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: url(../images/ic_pencil.png), auto;
   }
-
-.options {
-  font-size: 1.5em;
-  margin: 10px;
-  position: fixed;
-  right: 0;
-  cursor: pointer;
-}
 
 .colors {
   display: none;
   position: fixed;
   right: 0;
-  margin: 25px;
+  width: 180px;
+  top: 30px;
+  right: 30px;
   padding: 10px;
   background: white;
   border-radius: 5px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  text-align: center;
+  z-index: 100;
 }
-.color {
-  width: 24px;
-  height: 24px;
-  border-radius: 14px;
-  display: inline-block;
-  border: 2px solid white;
-  cursor: pointer;
-}
+  .colors label {
+    display: block;
+    margin: 10px 10px 10px 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    color: #616161;
+    font-size: 0.85em;
+    border-bottom: 1px solid #ececec;
+  }
+  .color {
+    width: 35px;
+    height: 35px;
+    border-radius: 25px;
+    display: inline-block;
+    border: 2px solid white;
+    cursor: pointer;
+  }
+
 .red {background-color: #F44336}
 .pink {background-color: #E91E63}
 .purple {background-color: #9C27B0}
@@ -79,25 +111,11 @@ html, body {
 .gray {background-color: #9E9E9E}
 .black {background-color: #000000}
 
-
-.title {
-  display: none;
-  position: fixed;
-  background: #16576f;
-  top: 0;
-  left: 50px;
-  padding: 10px 20px;
-  font-size: 1.5em;
-  color: #fff;
-  font-family: 'arial';
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
 .instructions {
   position: relative;
   width: 100%;
   height: 100%;
+  z-index: 200;
 }
 .overlay {
   position: fixed;
@@ -138,3 +156,21 @@ html, body {
       display: inline-block;
       width: 30%;
     }
+
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  background-color: #FF4081;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+  .fab i {
+    font-size: 1.5em;
+    color: #fff;
+    line-height: 70px;
+  }
+  .mouse-cursor { display: none; }
