@@ -1,9 +1,3 @@
-function hideInstructions() {
-	$(".overlay").click(function(){
-		$(".instructions").fadeOut();
-		$(".title").fadeIn();
-	});
-}
 
 /**
  * Displays a draggable circle in the options area.
@@ -125,7 +119,3 @@ function showQuadrangleOptions(){
 function clearOptions(){
 	document.getElementById("options").innerHTML = "";
 }
-
-
-
-hideInstructions();

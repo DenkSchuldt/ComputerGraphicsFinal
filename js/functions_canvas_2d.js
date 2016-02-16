@@ -254,22 +254,6 @@ function init() {
     $("#canvas_2d").attr("height", $("#canvas_2d").height());
     redraw(2);
   });
-
-  $('.options').click(function() {
-    $('.colors').toggle('drop');
-  });
-  $('.color').hover(
-    function(){
-      $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
-    }, function() {
-      $(this).attr('style', 'border: 2px solid white');
-  });
-  $('.color').click(function(){
-    main_color = $(this).css('background-color');
-    context.fillStyle = main_color;
-    $('.colors').toggle('drop');
-  });
-
 }
 
 function clearCanvas2D(){
