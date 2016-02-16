@@ -10,6 +10,7 @@ function rgb2hex(rgb) {
   return hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
 
+
 /**
  *
  */
@@ -61,6 +62,7 @@ function colorSelection() {
   	}
   });
 }
+
 
 /**
  *

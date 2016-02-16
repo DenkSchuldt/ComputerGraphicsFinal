@@ -188,6 +188,39 @@ function redraw(src) {
   }
 }
 
+
+/**
+ *
+ */
+$('#canvas_2d').on("touchstart", function(e){
+  clearOptions();
+  paint = true;
+  points = new Array();
+  var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+  var offset = $(this).offset();
+  var relX = touch.pageX - offset.left;
+  var relY = touch.pageY - offset.top;
+  var point = newPoint(relX, relY);
+  points.push(point);
+  redraw(1);
+});
+
+/**
+ *
+ */
+$('#canvas_2d').on("touchmove", function(e){
+  if(paint) {
+    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    var offset = $(this).offset();
+    var relX = touch.pageX - offset.left;
+    var relY = touch.pageY - offset.top;
+    var point = newPoint(relX, relY);
+    points.push(point);
+    redraw(1);
+  }
+});
+
+
 /**
  *
  */
@@ -220,20 +253,26 @@ $('#canvas_2d').mousemove(function(e) {
 /**
  *
  */
-$('#canvas_2d').mouseup(function(e) {
+$('#canvas_2d').on("mouseup touchend", function(e){
   paint = false;
   resample(64);
   redraw(2);
   getCorners();
   if (isCircle()) {
-    console.log('Es un círculo');
     showCircleOption();
   } else if(corners.length == 3 && figura_cerrada) {
-	  console.log('Es un Triangulo');
 	  showTriangleOptions();
   } else if(corners.length == 4 && figura_cerrada) {
-	  console.log('Es un Quadrangulo');
 	  showQuadrangleOptions();
+  }
+  lastPoint = resampledPoints[resampledPoints.length-1];
+  $('#options').css('top', lastPoint.y+'px');
+  $('#options').css('left', lastPoint.x+'px');
+  if ((lastPoint.x + $('#options').width()) > $(window).width()) {
+    $('#options').css('left', ($(window).width()-$('#options').width())+'px');
+  }
+  if ((lastPoint.y + $('#options').height()) > $(window).height()) {
+    $('#options').css('top', ($(window).height()-$('#options').height())+'px');
   }
 });
 

@@ -13,7 +13,7 @@ var control;
 
 function initialize() {
 	scene = new THREE.Scene();
-	WIDTH = window.innerWidth*6/10;
+	WIDTH = window.innerWidth;
 	HEIGHT = window.innerHeight;
 
 	renderer = new THREE.WebGLRenderer({antialias:true});
@@ -31,14 +31,14 @@ function initialize() {
 	scene.add(control);
 	window.addEventListener( 'mousedown', onMouseDown );
 	window.addEventListener('resize', function() {
-		WIDTH = window.innerWidth*6/10;
+		WIDTH = window.innerWidth;
 		HEIGHT = window.innerHeight;
 		renderer.setSize(WIDTH, HEIGHT);
 		camera.aspect = WIDTH / HEIGHT;
 		camera.updateProjectionMatrix();
 	});
 
-	renderer.setClearColor(0xffffff, 1);
+	renderer.setClearColor(0xe4e4e4, 1);
 
 	var ambientLight = new THREE.AmbientLight(0x999999);
 	scene.add(ambientLight);
@@ -131,7 +131,6 @@ $(function() {
 			var dPos = $(this).offset();
 			var top = pos.top - dPos.top;
 			var left = pos.left - dPos.left
-			console.log(ui.draggable.attr('figure'));
 			var type = ui.draggable.attr('figure');
 			if (type == 1){
 				drawTriangleByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
@@ -149,7 +148,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 	var vector = new THREE.Vector3();
 
 	vector.set(
-		( imagex / (window.innerWidth*6/10) ) * 2 - 1,
+		( imagex / (window.innerWidth) ) * 2 - 1,
 		- ( imagey / window.innerHeight ) * 2 + 1,
 		0.5 );
 
@@ -221,7 +220,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 	var vector = new THREE.Vector3();
 
 	vector.set(
-		( imagex / (window.innerWidth*6/10) ) * 2 - 1,
+		( imagex / (window.innerWidth) ) * 2 - 1,
 		- ( imagey / window.innerHeight ) * 2 + 1,
 		0.5 );
 
@@ -271,7 +270,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 	var vector = new THREE.Vector3();
 
 	vector.set(
-		( imagex / (window.innerWidth*6/10) ) * 2 - 1,
+		( imagex / (window.innerWidth) ) * 2 - 1,
 		- ( imagey / window.innerHeight ) * 2 + 1,
 		0.5 );
 
@@ -393,7 +392,7 @@ function changeToNextState(actualState){
 }
 
 function onMouseDown( e ) {
-	mouseVector.x = 2 * (e.clientX / (window.innerWidth*0.6)) - 1;
+	mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
 	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
 	raycaster.setFromCamera( mouseVector, camera );
 	intersectsMouse = raycaster.intersectObjects( objects , true);
