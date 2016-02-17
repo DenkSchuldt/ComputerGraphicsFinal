@@ -469,6 +469,25 @@ function addTexture(e, ui) {
 	}
 }
 
+/**
+ *
+ */
+function deleteObject() {
+	for (var i = 0; i < resampledPoints.length; i++) {
+		var e = resampledPoints[i];
+		mouseVector.x = 2 * (e.x / (window.innerWidth)) - 1;
+		mouseVector.y = 1 - 2 * ( e.y / window.innerHeight);
+		raycaster.setFromCamera( mouseVector, camera );
+		intersectsMouse = raycaster.intersectObjects( objects , true);
+		if (intersectsMouse.length>0) {
+			obj = intersectsMouse[0].object;
+			scene.remove(obj);
+			objects.splice(objects.indexOf(obj), 1);
+			clearCanvas2D();
+			break;
+		}
+	}
+}
 
 
 initialize();

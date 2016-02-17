@@ -264,6 +264,8 @@ $('#canvas_2d').on("mouseup touchend", function(e){
 	  showTriangleOptions();
   } else if(corners.length == 4 && figura_cerrada) {
 	  showQuadrangleOptions();
+  } else {
+    deleteObject();
   }
   lastPoint = resampledPoints[resampledPoints.length-1];
   $('#options').css('top', lastPoint.y+'px');
