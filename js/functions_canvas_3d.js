@@ -146,7 +146,15 @@ $(function() {
 			}else if (type == 2){
 				drawQuadrangleByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
 			}else if (type == 0){
-				drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
+				if (ui.draggable.attr('id') == 1){
+					drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
+				}else{
+					pos = ui.helper.offset();
+					dPos = $(this).offset();
+					top = pos.top - dPos.top;
+					left = pos.left - dPos.left
+					drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
+				}
 			}
 
 			if (ui.draggable.attr('class').indexOf("texture")>=0) {
@@ -330,7 +338,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		lightbulb.add(light);
 		lightbulb.position.x = pos.x;
 		lightbulb.position.z = pos.z;
-		lightbulb.position.y = 5;
+		lightbulb.position.y = 6;
 		scene.add(lightbulb);
 		objects.push(lightbulb);
 		for (i = 0; i < objects.length; i++){
@@ -367,7 +375,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 
 		sunRay.position.x = pos.x;
 		sunRay.position.z = pos.z;
-		sunRay.position.y = 5;
+		sunRay.position.y = 6;
 		scene.add(sunRay);
 		objects.push(sunRay);
 		for (i = 0; i < objects.length; i++){
