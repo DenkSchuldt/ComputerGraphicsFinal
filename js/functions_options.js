@@ -14,28 +14,6 @@ function showCircleOption() {
 	$(img).css('cursor', 'pointer');
 	$(img).draggable();
 	$('#options').append(img);
-
-	var img2 = document.createElement("img");
-	$(img2).attr('figure', 0);
-	$(img2).attr('id', 2);
-	$(img2).attr('src', "images/spotlight.png");
-	$(img2).attr('width', 150);
-	$(img2).attr('height', 150);
-	$(img2).attr('alt', 'Spotlight');
-	$(img2).css('cursor', 'pointer');
-	$(img2).draggable();
-	$('#options').append(img2);
-
-	var img3 = document.createElement("img");
-	$(img3).attr('figure', 0);
-	$(img3).attr('id', 3);
-	$(img3).attr('src', "images/directional.png");
-	$(img3).attr('width', 150);
-	$(img3).attr('height', 150);
-	$(img3).attr('alt', 'Directional Light');
-	$(img3).css('cursor', 'pointer');
-	$(img3).draggable();
-	$('#options').append(img3);
 }
 
 

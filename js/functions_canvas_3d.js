@@ -127,6 +127,9 @@ $(function() {
     $( "#canvas_3d" ).droppable({
 		tolerance: "pointer",
 		drop: function( event, ui ) {
+			if($('.lightning-options').is(':visible')) {
+				$('.lightning-options').toggle('drop');	
+			}
 			var pos = ui.draggable.offset();
 			var dPos = $(this).offset();
 			var top = pos.top - dPos.top;

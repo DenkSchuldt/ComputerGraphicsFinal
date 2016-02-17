@@ -53,6 +53,9 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
   #options img {
     width: 100px;
@@ -110,6 +113,25 @@ html, body {
 .brown {background-color: #795548}
 .gray {background-color: #9E9E9E}
 .black {background-color: #000000}
+
+.lightning-options {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 30px;
+  right: 60px;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  text-align: center;
+  z-index: 100;
+}
+  .lightning-options img {
+    width: 70px;
+    display: inline-block;
+    cursor: pointer;
+  }
 
 .instructions {
   position: relative;

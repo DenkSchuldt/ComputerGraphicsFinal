@@ -64,6 +64,13 @@ function colorSelection() {
 }
 
 
+function lightningMenuOption() {
+  $('.lightning').click(function() {
+    $('.lightning-options').toggle('drop');
+  });
+  $('.lightning-options img').draggable({ helper: 'clone' });
+}
+
 /**
  *
  */
@@ -81,6 +88,7 @@ function general_init() {
   colorSelection();
   hideInstructions();
   toggleSelectedOption();
+  lightningMenuOption();
 }
 
 
