@@ -128,7 +128,10 @@ $(function() {
 		tolerance: "pointer",
 		drop: function( event, ui ) {
 			if($('.lightning-options').is(':visible')) {
-				$('.lightning-options').toggle('drop');	
+				$('.lightning-options').toggle('drop');
+			}
+			if($('.textures-options').is(':visible')) {
+				$('.textures-options').toggle('drop');
 			}
 			var pos = ui.draggable.offset();
 			var dPos = $(this).offset();
@@ -141,6 +144,10 @@ $(function() {
 				drawQuadrangleByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
 			}else if (type == 0){
 				drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
+			}
+
+			if (ui.draggable.attr('class').indexOf("texture")>=0) {
+				addTexture(event, ui);
 			}
 		}
     });
@@ -424,6 +431,45 @@ function onMouseDown( e ) {
 		}
 	}
 }
+
+
+/**
+ *
+ */
+function addTexture(e, ui) {
+	mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
+	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
+	raycaster.setFromCamera( mouseVector, camera );
+	intersectsMouse = raycaster.intersectObjects( objects , true);
+	if (intersectsMouse.length>0){
+		obj = intersectsMouse[0].object;
+		console.log(obj);
+		var texture = ui.draggable.attr('src');
+		var loader = new THREE.TextureLoader();
+		loader.load(
+			texture,
+			function ( texture ) {
+				var material = new THREE.MeshBasicMaterial({ map: texture });
+				var mesh = new THREE.Mesh(obj.geometry, material );
+				mesh.position.x = obj.position.x;
+				mesh.position.y = obj.position.y;
+				mesh.position.z = obj.position.z;
+				scene.remove(obj);
+				objects.splice(objects.indexOf(obj), 1);
+				scene.add(mesh);
+				objects.push(mesh);
+			},
+			function ( xhr ) {
+				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			},
+			function ( xhr ) {
+				console.log( 'An error happened' );
+			}
+		);
+	}
+}
+
+
 
 initialize();
 animate();

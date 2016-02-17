@@ -64,11 +64,25 @@ function colorSelection() {
 }
 
 
+/**
+ *
+ */
 function lightningMenuOption() {
   $('.lightning').click(function() {
     $('.lightning-options').toggle('drop');
   });
   $('.lightning-options img').draggable({ helper: 'clone' });
+}
+
+
+/**
+ *
+ */
+function texturesMenuOption() {
+  $('.textures').click(function() {
+    $('.textures-options').toggle('drop');
+  });
+  $('.textures-options img').draggable({ helper: 'clone' });
 }
 
 /**
@@ -89,6 +103,7 @@ function general_init() {
   hideInstructions();
   toggleSelectedOption();
   lightningMenuOption();
+  texturesMenuOption();
 }
 
 
