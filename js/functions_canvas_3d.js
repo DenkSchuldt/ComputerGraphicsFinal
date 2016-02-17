@@ -127,6 +127,9 @@ $(function() {
     $( "#canvas_3d" ).droppable({
 		tolerance: "pointer",
 		drop: function( event, ui ) {
+			if($('.colors-option').is(':visible')) {
+				$('.colors-option').toggle('drop');
+			}
 			if($('.lightning-options').is(':visible')) {
 				$('.lightning-options').toggle('drop');
 			}
@@ -149,6 +152,10 @@ $(function() {
 			if (ui.draggable.attr('class').indexOf("texture")>=0) {
 				addTexture(event, ui);
 			}
+			if (ui.draggable.attr('class').indexOf("color")>=0) {
+				addColor(event, ui);
+			}
+
 		}
     });
 });
@@ -443,7 +450,6 @@ function addTexture(e, ui) {
 	intersectsMouse = raycaster.intersectObjects( objects , true);
 	if (intersectsMouse.length>0){
 		obj = intersectsMouse[0].object;
-		console.log(obj);
 		var texture = ui.draggable.attr('src');
 		var loader = new THREE.TextureLoader();
 		loader.load(
@@ -468,6 +474,31 @@ function addTexture(e, ui) {
 		);
 	}
 }
+
+
+/**
+ *
+ */
+function addColor(e, ui) {
+	mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
+	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
+	raycaster.setFromCamera( mouseVector, camera );
+	intersectsMouse = raycaster.intersectObjects( objects , true);
+	if (intersectsMouse.length>0) {
+		obj = intersectsMouse[0].object;
+		var material = new THREE.MeshLambertMaterial({color: '#'+rgb2hex($(ui.draggable).css('background-color'))});
+		var mesh = new THREE.Mesh(obj.geometry, material );
+		mesh.position.x = obj.position.x;
+		mesh.position.y = obj.position.y;
+		mesh.position.z = obj.position.z;
+		scene.remove(obj);
+		objects.splice(objects.indexOf(obj), 1);
+		scene.add(mesh);
+		objects.push(mesh);
+	}
+}
+
+
 
 /**
  *

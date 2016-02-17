@@ -45,11 +45,21 @@ function toggleSelectedOption() {
 /**
  *
  */
-function colorSelection() {
+function colorsMenuOption() {
+  $('.colors').click(function() {
+    $('.colors-option').toggle('drop');
+  });
+  $('.colors-option span').draggable({ helper: 'clone' });
+  $('.color').hover(
+    function(){
+      $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
+    }, function() {
+      $(this).attr('style', 'border: 2px solid white');
+  });
   $('.color').click(function(){
     main_color = $(this).css('background-color');
     context.fillStyle = main_color;
-    $('.colors').toggle('drop');
+    $('.colors-option').toggle('drop');
     url = 'url(../images/cursors/' + rgb2hex(main_color) + '.png) 6 40, auto';
     console.log(url);
     $("#canvas_2d").css('cursor', url);
@@ -89,19 +99,9 @@ function texturesMenuOption() {
  *
  */
 function general_init() {
-  $('.options').click(function() {
-    $('.colors').toggle('drop');
-  });
-  $('.color').hover(
-    function(){
-      $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
-    }, function() {
-      $(this).attr('style', 'border: 2px solid white');
-  });
-
-  colorSelection();
   hideInstructions();
   toggleSelectedOption();
+  colorsMenuOption();
   lightningMenuOption();
   texturesMenuOption();
 }

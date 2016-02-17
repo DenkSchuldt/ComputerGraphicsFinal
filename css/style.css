@@ -62,7 +62,7 @@ html, body {
     height: auto;
   }
 
-.colors {
+.colors-option {
   display: none;
   position: fixed;
   right: 0;
@@ -76,7 +76,7 @@ html, body {
   text-align: center;
   z-index: 100;
 }
-  .colors label {
+  .colors-option label {
     display: block;
     margin: 10px 10px 10px 10px;
     padding-bottom: 10px;
