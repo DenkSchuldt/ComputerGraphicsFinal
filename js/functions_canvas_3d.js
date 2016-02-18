@@ -462,27 +462,19 @@ function addTexture(e, ui) {
 	if (intersectsMouse.length>0){
 		obj = intersectsMouse[0].object;
 		var texture = ui.draggable.attr('src');
-		var loader = new THREE.TextureLoader();
-		loader.load(
-			texture,
-			function ( texture ) {
-				var material = new THREE.MeshBasicMaterial({ map: texture });
-				var mesh = new THREE.Mesh(obj.geometry, material );
-				mesh.position.x = obj.position.x;
-				mesh.position.y = obj.position.y;
-				mesh.position.z = obj.position.z;
-				scene.remove(obj);
-				objects.splice(objects.indexOf(obj), 1);
-				scene.add(mesh);
-				objects.push(mesh);
-			},
-			function ( xhr ) {
-				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-			},
-			function ( xhr ) {
-				console.log( 'An error happened' );
+		if (obj.parent!=scene){
+			for (j = 0; j < obj.parent.children.length; j++){
+				try{
+					obj.parent.children[j].material.map = THREE.ImageUtils.loadTexture( texture );
+					obj.parent.children[j].material.needsUpdate = true;
+				}catch(err){
+
+				}
 			}
-		);
+		}else{
+			obj.material.map = THREE.ImageUtils.loadTexture( texture );
+			obj.material.needsUpdate = true;
+		}
 	}
 }
 
@@ -497,15 +489,17 @@ function addColor(e, ui) {
 	intersectsMouse = raycaster.intersectObjects( objects , true);
 	if (intersectsMouse.length>0) {
 		obj = intersectsMouse[0].object;
-		var material = new THREE.MeshLambertMaterial({color: '#'+rgb2hex($(ui.draggable).css('background-color'))});
-		var mesh = new THREE.Mesh(obj.geometry, material );
-		mesh.position.x = obj.position.x;
-		mesh.position.y = obj.position.y;
-		mesh.position.z = obj.position.z;
-		scene.remove(obj);
-		objects.splice(objects.indexOf(obj), 1);
-		scene.add(mesh);
-		objects.push(mesh);
+		if (obj.parent!=scene){
+			for (j = 0; j < obj.parent.children.length; j++){
+				try{
+					obj.parent.children[j].material.color.setHex('0x'+rgb2hex($(ui.draggable).css('background-color')));
+				}catch(err){
+
+				}
+			}
+		}else{
+			obj.material.color.setHex('0x'+rgb2hex($(ui.draggable).css('background-color')));
+		}
 	}
 }
 
