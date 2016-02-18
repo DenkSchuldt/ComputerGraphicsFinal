@@ -64,11 +64,48 @@ function getDistance(pointA, pointB) {
 	return Math.sqrt(Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2));
 }
 
+function getMagnitud(pointA) {
+	return Math.sqrt(Math.pow(pointA.x, 2) + Math.pow(pointA.y, 2));
+}
+
+function getNormalZ(pointA, pointB, pointC){
+	return producto_cruz = (pointB.x - pointA.x)*(pointC.y - pointB.y) - (pointC.x - pointB.x)*(pointB.y - pointA.y);	
+}
+
+function isConvex(){
+	var sign;
+	if (getNormalZ(corners[0], corners[1], corners[2]) > 0){
+		sign = 1;
+	}else{
+		sign = 0;
+	}
+	
+	for (i = 1; i < corners.length-1; i++) {
+		var normalZ = getNormalZ(corners[i-1], corners[i], corners[i+1]);
+		console.log(normalZ);
+		if (sign == 1 && normalZ <= 0){
+			return false;
+		}else if(sign == 0 && normalZ > 0){
+			return false;
+		}
+	}
+	
+	var normalZ = getNormalZ(corners[1], corners[2], corners[0]);
+	console.log(normalZ);
+	if (sign == 1 && normalZ <= 0){
+		return false;
+	}else if(sign == 0 && normalZ > 0){
+		return false;
+	}
+	
+	return true;
+}
+
 /**
  *
  */
 function getCorners() {
-  corners = new Array();
+    corners = new Array();
 	corners.push(resampledPoints[0]);
 	for (i = 1; i < resampledPoints.length - 1; i++) {
 		var p1 = newPoint(resampledPoints[i-1].x, resampledPoints[i-1].y);
@@ -82,8 +119,13 @@ function getCorners() {
 		}
 		distancia_punto_anterior = getDistance(corners[corners.length-1], resampledPoints[i]);
 		if(dot_product > 35 && distancia_punto_anterior > 5*dist_prom) {
-      var point = newPoint(resampledPoints[i].x, resampledPoints[i].y);
+			var point = newPoint(resampledPoints[i].x, resampledPoints[i].y);
 			corners.push(point);
+		}
+	}
+	if(corners.length > 2){
+		if (!isConvex()){
+			corners = new Array();
 		}
 	}
 }
