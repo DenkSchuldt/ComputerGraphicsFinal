@@ -423,6 +423,9 @@ function onMouseDown( e ) {
 	intersectsMouse = raycaster.intersectObjects( objects , true);
 	if (intersectsMouse.length>0){
 		obj = intersectsMouse[0].object;
+		if (obj.parent!=scene){
+			obj = obj.parent;
+		}
 		if (selected.length==0){
 			actualState = states[0];
 			control.setMode("translate");
@@ -520,6 +523,9 @@ function deleteObject() {
 		intersectsMouse = raycaster.intersectObjects( objects , true);
 		if (intersectsMouse.length>0) {
 			obj = intersectsMouse[0].object;
+			if (obj.parent!=scene){
+				obj = obj.parent;
+			}
 			scene.remove(obj);
 			objects.splice(objects.indexOf(obj), 1);
 			clearCanvas2D();
