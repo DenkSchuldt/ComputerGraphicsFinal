@@ -11,6 +11,10 @@ var states = ["moving", "rotating", "scaling"];
 var actualState = "";
 var control;
 
+
+/**
+ *
+ */
 function initialize() {
 	scene = new THREE.Scene();
 	WIDTH = window.innerWidth;
@@ -47,11 +51,6 @@ function initialize() {
 
 }
 
-function animate() {
-	requestAnimationFrame(animate);
-	control.update();
-	renderer.render(scene, camera);
-}
 
 /**
  *
@@ -107,8 +106,8 @@ function createAxes(longLine, xOrigin, yOrigin, zOrigin, haveNegativeAxes) {
 }
 
 /**
-			 *
-			 */
+ *
+ */
 function createAxis( src, dst, colorHex, dashed) {
 	var geom = new THREE.Geometry(),
 	mat;
@@ -123,8 +122,12 @@ function createAxis( src, dst, colorHex, dashed) {
 	return new THREE.Line( geom, mat, THREE.LinePieces );
 }
 
+
+/**
+ *
+ */
 $(function() {
-    $( "#canvas_3d" ).droppable({
+  $( "#canvas_3d" ).droppable({
 		tolerance: "pointer",
 		drop: function( event, ui ) {
 			if($('.colors-option').is(':visible')) {
@@ -156,18 +159,20 @@ $(function() {
 					drawSphereByPosition(ui.draggable.attr('id'), left + ui.draggable.width()/2, top + ui.draggable.height()/2);
 				}
 			}
-
 			if (ui.draggable.attr('class').indexOf("texture")>=0) {
 				addTexture(event, ui);
 			}
 			if (ui.draggable.attr('class').indexOf("color")>=0) {
 				addColor(event, ui);
 			}
-
 		}
-    });
+  });
 });
 
+
+/**
+ *
+ */
 function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 
 	var vector = new THREE.Vector3();
@@ -240,6 +245,10 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 	clearCanvas2D();
 }
 
+
+/**
+ *
+ */
 function drawTriangleByPosition(triangleType, imagex, imagey){
 
 	var vector = new THREE.Vector3();
@@ -290,6 +299,10 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 	clearCanvas2D();
 }
 
+
+/**
+ *
+ */
 function drawSphereByPosition(circleType, imagex, imagey){
 
 	var vector = new THREE.Vector3();
@@ -400,22 +413,27 @@ function drawSphereByPosition(circleType, imagex, imagey){
 	clearCanvas2D();
 }
 
+
+/**
+ *
+ */
 function changeToNextState(actualState){
 	if (actualState == states[0]){
-		console.log("Ahora Rotando");
 		control.setMode("rotate");
 		return states[1];
 	}else if (actualState == states[1]){
-		console.log("Ahora Escalando");
 		control.setMode("scale");
 		return states[2];
 	}else{
-		console.log("Moviendo de Vuelta");
 		control.setMode("translate");
 		return states[0];
 	}
 }
 
+
+/**
+ *
+ */
 function onMouseDown( e ) {
 	mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
 	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
@@ -465,14 +483,21 @@ function addTexture(e, ui) {
 		if (obj.parent!=scene){
 			for (j = 0; j < obj.parent.children.length; j++){
 				try{
-					obj.parent.children[j].material.map = THREE.ImageUtils.loadTexture( texture );
+					if (texture.indexOf('000')>=0) {
+						obj.parent.children[j].material.map = null;
+					} else {
+						obj.parent.children[j].material.map = THREE.ImageUtils.loadTexture( texture );
+					}
 					obj.parent.children[j].material.needsUpdate = true;
 				}catch(err){
-
 				}
 			}
 		}else{
-			obj.material.map = THREE.ImageUtils.loadTexture( texture );
+			if (texture.indexOf('000')>=0) {
+				obj.material.map = null;
+			} else {
+				obj.material.map = THREE.ImageUtils.loadTexture( texture );
+			}
 			obj.material.needsUpdate = true;
 		}
 	}
@@ -494,7 +519,6 @@ function addColor(e, ui) {
 				try{
 					obj.parent.children[j].material.color.setHex('0x'+rgb2hex($(ui.draggable).css('background-color')));
 				}catch(err){
-
 				}
 			}
 		}else{
@@ -502,7 +526,6 @@ function addColor(e, ui) {
 		}
 	}
 }
-
 
 
 /**
@@ -528,6 +551,15 @@ function deleteObject() {
 	}
 }
 
+
+/**
+ *
+ */
+function animate() {
+	requestAnimationFrame(animate);
+	control.update();
+	renderer.render(scene, camera);
+}
 
 initialize();
 animate();

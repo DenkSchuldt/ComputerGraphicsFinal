@@ -282,14 +282,11 @@ $('#canvas_2d').on("mouseup touchend", function(e){
  *
  */
 function init() {
-
   line_height = 4;
   main_color = "#F44336";
   context = document.getElementById('canvas_2d').getContext("2d");
-
   $("#canvas_2d").attr("width", $("#canvas_2d").width());
   $("#canvas_2d").attr("height", $("#canvas_2d").height());
-
   window.addEventListener('resize', function() {
     $("#canvas_2d").attr("width", $("#canvas_2d").width());
     $("#canvas_2d").attr("height", $("#canvas_2d").height());
@@ -297,6 +294,10 @@ function init() {
   });
 }
 
+
+/**
+ *
+ */
 function clearCanvas2D(){
 	points = new Array();
 	resampledPoints = new Array();

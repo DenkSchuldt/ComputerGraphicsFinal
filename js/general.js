@@ -49,7 +49,11 @@ function colorsMenuOption() {
   $('.colors').click(function() {
     $('.colors-option').toggle('drop');
   });
-  $('.colors-option span').draggable({ helper: 'clone' });
+  $('.colors-option span').draggable({
+    appendTo: 'body',
+    containment: 'window',
+    helper: 'clone'
+  });
   $('.color').hover(
     function(){
       $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
@@ -92,7 +96,11 @@ function texturesMenuOption() {
   $('.textures').click(function() {
     $('.textures-options').toggle('drop');
   });
-  $('.textures-options img').draggable({ helper: 'clone' });
+  $('.textures-options img').draggable({
+    appendTo: 'body',
+    containment: 'window',
+    helper: 'clone'
+  });
 }
 
 /**
