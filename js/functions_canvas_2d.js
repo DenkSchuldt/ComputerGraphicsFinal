@@ -25,6 +25,7 @@ var colors = {
 var CIRCLE_VARIANCE_MAX = 40;
 
 // Variables
+var point;
 var paint;
 var context;
 var main_color;
@@ -92,7 +93,7 @@ function getCorners() {
  */
 function isCircle() {
   var radiuses = new Array();
-  var point = newPoint(0,0);
+  point = newPoint(0,0);
   for (var i = 0; i < resampledPoints.length; i++) {
     point.x += resampledPoints[i].x;
     point.y += resampledPoints[i].y;
@@ -188,6 +189,21 @@ function redraw(src) {
   }
 }
 
+function recircle(){
+  var radius;
+  var newCircle = new Array();
+  radius = getDistance(point, resampledPoints[0]);
+  for (var i = 0; i < 64; i++) {
+    var pct = (i + 1) / 64;
+    var theta = pct * Math.PI * 2.0;
+    var x = (radius * Math.cos(theta)) + point.x;
+    var y = (radius * Math.sin(theta)) + point.y;
+    var circlePoint = newPoint(x,y);
+    newCircle.push(circlePoint);
+  }
+  resampledPoints = newCircle;
+  resampledPoints.push(newCircle[0]);
+}
 
 /**
  *
@@ -256,15 +272,23 @@ $('#canvas_2d').mousemove(function(e) {
 $('#canvas_2d').on("mouseup touchend", function(e){
   paint = false;
   resample(64);
-  redraw(2);
   getCorners();
   if (isCircle()) {
+    recircle();
+    redraw(2);
     showCircleOption();
   } else if(corners.length == 3 && figura_cerrada) {
-	  showTriangleOptions();
+    resampledPoints = corners;
+    resampledPoints.push(corners[0]);
+    redraw(2);
+    showTriangleOptions();
   } else if(corners.length == 4 && figura_cerrada) {
-	  showQuadrangleOptions();
+    resampledPoints = corners;
+    resampledPoints.push(corners[0]);
+    redraw(2);
+    showQuadrangleOptions();
   } else {
+    redraw(2);
     deleteObject();
   }
   lastPoint = resampledPoints[resampledPoints.length-1];
