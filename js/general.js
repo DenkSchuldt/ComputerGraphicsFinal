@@ -55,6 +55,9 @@ function closeMenuOptions() {
   if($('.textures-options').is(':visible')) {
     $('.textures-options').toggle('drop');
   }
+  if($('.instructions-option').is(':visible')) {
+    $('.instructions-option').toggle('drop');
+  }
 }
 
 
@@ -69,6 +72,9 @@ function colorsMenuOption() {
     }
     if($('.textures-options').is(':visible')) {
       $('.textures-options').toggle('drop');
+    }
+    if($('.instructions-option').is(':visible')) {
+      $('.instructions-option').toggle('drop');
     }
   });
   $('.colors-option span').draggable({
@@ -96,7 +102,8 @@ function colorsMenuOption() {
     context.fillStyle = main_color;
     $('.colors-option').toggle('drop');
     url = 'url(../images/cursors/' + rgb2hex(main_color) + '.png) 6 40, auto';
-    console.log(url);
+    hex = '#'+rgb2hex(main_color);
+    $('.colors').css('color', hex);
     $("#canvas_2d").css('cursor', url);
     $('#canvas_2d').fadeIn('fast');
     if ($('.pencil-cursor').is(':visible')) {
@@ -120,6 +127,9 @@ function lightningMenuOption() {
     }
     if($('.textures-options').is(':visible')) {
       $('.textures-options').toggle('drop');
+    }
+    if($('.instructions-option').is(':visible')) {
+      $('.instructions-option').toggle('drop');
     }
   });
   $('.lightning-options img').draggable({
@@ -145,6 +155,9 @@ function texturesMenuOption() {
     if($('.lightning-options').is(':visible')) {
       $('.lightning-options').toggle('drop');
     }
+    if($('.instructions-option').is(':visible')) {
+      $('.instructions-option').toggle('drop');
+    }
   });
   $('.textures-options img').draggable({
     appendTo: 'body',
@@ -152,6 +165,25 @@ function texturesMenuOption() {
     helper: 'clone',
     start: function(e, ui) {
       closeMenuOptions();
+    }
+  });
+}
+
+
+/**
+ *
+ */
+function instructionsMenuOption() {
+  $('.instructions').click(function() {
+    $('.instructions-option').toggle('drop');
+    if($('.colors-option').is(':visible')) {
+      $('.colors-option').toggle('drop');
+    }
+    if($('.textures-options').is(':visible')) {
+      $('.textures-options').toggle('drop');
+    }
+    if($('.lightning-options').is(':visible')) {
+      $('.lightning-options').toggle('drop');
     }
   });
 }
@@ -165,6 +197,7 @@ function general_init() {
   colorsMenuOption();
   lightningMenuOption();
   texturesMenuOption();
+  instructionsMenuOption();
 }
 
 

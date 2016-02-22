@@ -2,6 +2,12 @@
 <html>
 	<head>
 		<meta charset=utf-8>
+		<!--
+			Developers:
+				* Roberto Yoncón
+				* Denny Schuldt
+				* Pedro Íñiguez
+		-->
 		<title>Geometric Shaper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="./js/three.min.js"></script>
@@ -16,9 +22,10 @@
 	<body>
 		<nav class="navbar">
 			<label>Geometric Shaper</label>
-			<i class="fa fa-cog colors"></i>
+			<i class="fa fa-info-circle instructions"></i>
+			<i class="fa fa-circle colors"></i>
 			<i class="fa fa-lightbulb-o lightning"></i>
-			<i class="textures">Texturas</i>
+			<i class="textures">Textures</i>
 		</nav>
 
 		<div id="canvas_3d"></div>
@@ -26,7 +33,7 @@
 		<div id="options"></div>
 
 		<div class="colors-option">
-			<label>Trazo y figuras:</label>
+			<label>Sketch and figures:</label>
 			<span class="color red"></span>
 			<span class="color pink"></span>
 			<span class="color purple"></span>
@@ -53,7 +60,7 @@
 			<img src="images/directional.png" alt="Directional Light" figure="0" id="3"/>
 		</div>
 		<div class="textures-options">
-			<label>Madera:</label>
+			<label>Wood:</label>
 			<img src="images/textures/001.jpg" class='texture'/>
 			<img src="images/textures/002.jpg" class='texture'/>
 			<img src="images/textures/003.jpg" class='texture'/>
@@ -67,7 +74,7 @@
 			<img src="images/textures/011.jpg" class='texture'/>
 			<img src="images/textures/012.jpg" class='texture'/>
 			<img src="images/textures/013.jpg" class='texture'/>
-			<label>Fuego:</label>
+			<label>Fire:</label>
 			<img src="images/textures/fire-001.jpg" class='texture'/>
 			<img src="images/textures/fire-002.jpg" class='texture'/>
 			<img src="images/textures/fire-003.jpg" class='texture'/>
@@ -82,14 +89,14 @@
 			<img src="images/textures/metal-007.jpg" class='texture'/>
 			<img src="images/textures/metal-008.jpg" class='texture'/>
 			<img src="images/textures/metal-009.jpg" class='texture'/>
-			<label>Abstracto:</label>
+			<label>Abstract:</label>
 			<img src="images/textures/abstract-001.jpg" class='texture'/>
 			<img src="images/textures/abstract-002.jpg" class='texture'/>
 			<img src="images/textures/abstract-003.jpg" class='texture'/>
 			<img src="images/textures/abstract-004.jpg" class='texture'/>
 			<img src="images/textures/abstract-005.jpg" class='texture'/>
 			<img src="images/textures/abstract-006.jpg" class='texture'/>
-			<label>Piedra:</label>
+			<label>Stone:</label>
 			<img src="images/textures/stone-001.jpg" class='texture'/>
 			<img src="images/textures/stone-002.jpg" class='texture'/>
 			<img src="images/textures/stone-003.jpg" class='texture'/>
@@ -97,7 +104,7 @@
 			<img src="images/textures/stone-005.jpg" class='texture'/>
 			<img src="images/textures/stone-006.jpg" class='texture'/>
 			<img src="images/textures/stone-007.jpg" class='texture'/>
-			<label>Césped:</label>
+			<label>Grass:</label>
 			<img src="images/textures/grass-001.jpg" class='texture'/>
 			<img src="images/textures/grass-002.jpg" class='texture'/>
 			<img src="images/textures/grass-003.jpg" class='texture'/>
@@ -106,22 +113,20 @@
 			<img src="images/textures/grass-006.jpg" class='texture'/>
 			<img src="images/textures/grass-007.jpg" class='texture'/>
 			<img src="images/textures/grass-008.jpg" class='texture'/>
-			<label>Ninguna:</label>
+			<label>None:</label>
 			<img src="images/textures/000.jpg" class='texture'/>
 		</div>
-		<!--<div id="instructions" class="instructions">
-			<div class="overlay"></div>
-			<div class="dialog">
-				<h1>Geometric Shaper</h1>
-				<p>Una herramienta de manipulación 3D, a través de dibujos en 2D.</p>
-				<img src="./images/intro.png" alt="intro"/>
-				<ul>
-					<li>Pedro Íñiguez</li>
-					<li>Denny Schuldt</li>
-					<li>Roberto Yoncón</li>
-				</ul>
-			</div>
-		</div>-->
+		<div class="instructions-option">
+			<h4>Geometric Shaper</h4>
+			<p style="text-align:center;">A manipulation tool for 3D geometric figures, starting with 2D sketches.</p>
+			<label>Instructions:</label>
+			<label>Developers:</label>
+			<ul>
+				<li>Roberto Yoncón</li>
+				<li>Denny Schuldt</li>
+				<li>Pedro Íñiguez</li>
+			</ul>
+		</div>
 
 		<div class="fab">
 			<i class="mouse-cursor fa fa-mouse-pointer"></i>
