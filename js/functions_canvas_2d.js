@@ -338,13 +338,15 @@ $('#canvas_2d').on("mouseup touchend", function(e){
     deleteObject();
   }
   lastPoint = resampledPoints[resampledPoints.length-1];
-  $('#options').css('top', lastPoint.y+'px');
-  $('#options').css('left', lastPoint.x+'px');
-  if ((lastPoint.x + $('#options').width()) > $(window).width()) {
-    $('#options').css('left', ($(window).width()-$('#options').width())+'px');
-  }
-  if ((lastPoint.y + $('#options').height()) > $(window).height()) {
-    $('#options').css('top', ($(window).height()-$('#options').height())+'px');
+  if (lastPoint) {
+    $('#options').css('top', lastPoint.y+'px');
+    $('#options').css('left', lastPoint.x+'px');
+    if ((lastPoint.x + $('#options').width()) > $(window).width()) {
+      $('#options').css('left', ($(window).width()-$('#options').width())+'px');
+    }
+    if ((lastPoint.y + $('#options').height()) > $(window).height()) {
+      $('#options').css('top', ($(window).height()-$('#options').height())+'px');
+    }  
   }
 });
 

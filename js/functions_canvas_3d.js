@@ -427,35 +427,37 @@ function changeToNextState(actualState){
  *
  */
 function onMouseDown( e ) {
-	mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
-	mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
-	raycaster.setFromCamera( mouseVector, camera );
-	intersectsMouse = raycaster.intersectObjects( objects , true);
-	if (intersectsMouse.length>0){
-		obj = intersectsMouse[0].object;
-		if (obj.parent!=scene){
-			obj = obj.parent;
-		}
-		if (selected.length==0){
-			actualState = states[0];
-			control.setMode("translate");
-			control.attach(obj);
-			selected.push(obj);
-		}else if(selected[0]!=obj){
-			control.detach();
-			selected.pop();
-			actualState = states[0];
-			control.setMode("translate");
-			control.attach(obj);
-			selected.push(obj);
+	if ($('.fa-pencil').is(':visible')) {
+		mouseVector.x = 2 * (e.clientX / (window.innerWidth)) - 1;
+		mouseVector.y = 1 - 2 * ( e.clientY / window.innerHeight);
+		raycaster.setFromCamera( mouseVector, camera );
+		intersectsMouse = raycaster.intersectObjects( objects , true);
+		if (intersectsMouse.length>0){
+			obj = intersectsMouse[0].object;
+			if (obj.parent!=scene){
+				obj = obj.parent;
+			}
+			if (selected.length==0){
+				actualState = states[0];
+				control.setMode("translate");
+				control.attach(obj);
+				selected.push(obj);
+			}else if(selected[0]!=obj){
+				control.detach();
+				selected.pop();
+				actualState = states[0];
+				control.setMode("translate");
+				control.attach(obj);
+				selected.push(obj);
+			}else{
+				actualState = changeToNextState(actualState);
+			}
 		}else{
-			actualState = changeToNextState(actualState);
-		}
-	}else{
-		if (selected.length>0){
-			control.detach();
-			selected.pop();
-			control.update();
+			if (selected.length>0){
+				control.detach();
+				selected.pop();
+				control.update();
+			}
 		}
 	}
 }
@@ -524,6 +526,7 @@ function addColor(e, ui) {
  *
  */
 function deleteObject() {
+	var counter = 0;
 	for (var i = 0; i < resampledPoints.length; i++) {
 		var e = resampledPoints[i];
 		mouseVector.x = 2 * (e.x / (window.innerWidth)) - 1;
@@ -531,6 +534,9 @@ function deleteObject() {
 		raycaster.setFromCamera( mouseVector, camera );
 		intersectsMouse = raycaster.intersectObjects( objects , true);
 		if (intersectsMouse.length>0) {
+			counter++;
+		}
+		if (counter > 10) {
 			obj = intersectsMouse[0].object;
 			if (obj.parent!=scene){
 				obj = obj.parent;
@@ -538,7 +544,6 @@ function deleteObject() {
 			scene.remove(obj);
 			objects.splice(objects.indexOf(obj), 1);
 			clearCanvas2D();
-			break;
 		}
 	}
 }

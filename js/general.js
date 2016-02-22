@@ -64,17 +64,32 @@ function closeMenuOptions() {
 function colorsMenuOption() {
   $('.colors').click(function() {
     $('.colors-option').toggle('drop');
+    if($('.lightning-options').is(':visible')) {
+      $('.lightning-options').toggle('drop');
+    }
+    if($('.textures-options').is(':visible')) {
+      $('.textures-options').toggle('drop');
+    }
   });
   $('.colors-option span').draggable({
     appendTo: 'body',
     containment: 'window',
-    helper: 'clone'
+    helper: 'clone',
+    start: function(e, ui) {
+      closeMenuOptions();
+    }
   });
   $('.color').hover(
     function(){
       $(this).attr('style', 'border: 2px solid ' + $(this).css('background-color'));
+      if (rgb2hex($(this).css('background-color')).indexOf('ffffff') >= 0) {
+        $(this).attr('style', 'border: 2px solid #000');
+      }
     }, function() {
       $(this).attr('style', 'border: 2px solid white');
+      if (rgb2hex($(this).css('background-color')).indexOf('ffffff') >= 0) {
+        $(this).attr('style', 'border: 1px solid #000');
+      }
   });
   $('.color').click(function(){
     main_color = $(this).css('background-color');
@@ -100,8 +115,21 @@ function colorsMenuOption() {
 function lightningMenuOption() {
   $('.lightning').click(function() {
     $('.lightning-options').toggle('drop');
+    if($('.colors-option').is(':visible')) {
+      $('.colors-option').toggle('drop');
+    }
+    if($('.textures-options').is(':visible')) {
+      $('.textures-options').toggle('drop');
+    }
   });
-  $('.lightning-options img').draggable({ helper: 'clone' });
+  $('.lightning-options img').draggable({
+    helper: 'clone',
+    appendTo: 'body',
+    containment: 'window',
+    start: function(e, ui) {
+      closeMenuOptions();
+    }
+  });
 }
 
 
@@ -111,11 +139,20 @@ function lightningMenuOption() {
 function texturesMenuOption() {
   $('.textures').click(function() {
     $('.textures-options').toggle('drop');
+    if($('.colors-option').is(':visible')) {
+      $('.colors-option').toggle('drop');
+    }
+    if($('.lightning-options').is(':visible')) {
+      $('.lightning-options').toggle('drop');
+    }
   });
   $('.textures-options img').draggable({
     appendTo: 'body',
     containment: 'window',
-    helper: 'clone'
+    helper: 'clone',
+    start: function(e, ui) {
+      closeMenuOptions();
+    }
   });
 }
 
