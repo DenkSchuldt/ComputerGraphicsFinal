@@ -23,6 +23,12 @@ html, body {
     height: 100%;
     display: inline-block;
     margin-left: 20px;
+    font-weight: bold;
+  }
+  @media screen and (max-width: 600px) {
+    .navbar label {
+      font-size: 1em;
+    }
   }
   .navbar i {
     line-height: 60px;

@@ -45,6 +45,22 @@ function toggleSelectedOption() {
 /**
  *
  */
+function closeMenuOptions() {
+  if($('.colors-option').is(':visible')) {
+    $('.colors-option').toggle('drop');
+  }
+  if($('.lightning-options').is(':visible')) {
+    $('.lightning-options').toggle('drop');
+  }
+  if($('.textures-options').is(':visible')) {
+    $('.textures-options').toggle('drop');
+  }
+}
+
+
+/**
+ *
+ */
 function colorsMenuOption() {
   $('.colors').click(function() {
     $('.colors-option').toggle('drop');

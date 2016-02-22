@@ -130,15 +130,7 @@ $(function() {
   $( "#canvas_3d" ).droppable({
 		tolerance: "pointer",
 		drop: function( event, ui ) {
-			if($('.colors-option').is(':visible')) {
-				$('.colors-option').toggle('drop');
-			}
-			if($('.lightning-options').is(':visible')) {
-				$('.lightning-options').toggle('drop');
-			}
-			if($('.textures-options').is(':visible')) {
-				$('.textures-options').toggle('drop');
-			}
+			closeMenuOptions();
 			var pos = ui.draggable.offset();
 			var dPos = $(this).offset();
 			var top = pos.top - dPos.top;

@@ -23,6 +23,7 @@ var colors = {
 
 // THRESHOLD
 var CIRCLE_VARIANCE_MAX = 40;
+var CIRCLE_VARIANCE_MIN = 2;
 
 // Variables
 var point;
@@ -69,7 +70,7 @@ function getMagnitud(pointA) {
 }
 
 function getNormalZ(pointA, pointB, pointC){
-	return producto_cruz = (pointB.x - pointA.x)*(pointC.y - pointB.y) - (pointC.x - pointB.x)*(pointB.y - pointA.y);	
+	return producto_cruz = (pointB.x - pointA.x)*(pointC.y - pointB.y) - (pointC.x - pointB.x)*(pointB.y - pointA.y);
 }
 
 function isConvex(){
@@ -79,7 +80,7 @@ function isConvex(){
 	}else{
 		sign = 0;
 	}
-	
+
 	for (i = 1; i < corners.length-1; i++) {
 		var normalZ = getNormalZ(corners[i-1], corners[i], corners[i+1]);
 		console.log(normalZ);
@@ -89,7 +90,7 @@ function isConvex(){
 			return false;
 		}
 	}
-	
+
 	var normalZ = getNormalZ(corners[1], corners[2], corners[0]);
 	console.log(normalZ);
 	if (sign == 1 && normalZ <= 0){
@@ -97,7 +98,7 @@ function isConvex(){
 	}else if(sign == 0 && normalZ > 0){
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -145,7 +146,8 @@ function isCircle() {
   for (var i = 0; i < resampledPoints.length; i++) {
     radiuses.push(getDistance(point, resampledPoints[i]));
   }
-  if (Math.pow(math.std(radiuses), 2) < CIRCLE_VARIANCE_MAX) {
+  var variance = Math.pow(math.std(radiuses), 2);
+  if (variance > CIRCLE_VARIANCE_MIN && variance < CIRCLE_VARIANCE_MAX) {
     return true;
   }
   return false;
@@ -252,6 +254,7 @@ function recircle(){
  */
 $('#canvas_2d').on("touchstart", function(e){
   clearOptions();
+  closeMenuOptions();
   paint = true;
   points = new Array();
   var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -284,6 +287,7 @@ $('#canvas_2d').on("touchmove", function(e){
  */
 $('#canvas_2d').mousedown(function(e) {
   clearOptions();
+  closeMenuOptions();
   paint = true;
   points = new Array();
   var offset = $(this).offset();
