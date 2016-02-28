@@ -21,8 +21,8 @@ html, body {
     font-size: 1.5em;
     color: #fff;
     height: 100%;
-    display: inline-block;
     margin-left: 20px;
+    display: inline-block;
     font-weight: bold;
   }
   @media screen and (max-width: 600px) {
@@ -35,7 +35,10 @@ html, body {
     height: 100%;
     cursor: pointer;
     float: right;
-    margin-right: 20px;
+    padding: 0 10px;
+  }
+  .navbar i:hover {
+    background-color: #00838F;
   }
 
 #canvas_3d {
@@ -73,8 +76,6 @@ html, body {
   right: 0;
   width: 200px;
   height: 300px;
-  top: 30px;
-  right: 60px;
   padding: 10px;
   background: white;
   border-radius: 5px;
@@ -129,12 +130,11 @@ html, body {
   border: 1px solid #000;
 }
 
-.lightning-options {
+.lightning-option {
   display: none;
   position: fixed;
   right: 0;
-  top: 30px;
-  right: 90px;
+  width: auto;
   padding: 10px;
   background: white;
   border-radius: 5px;
@@ -142,7 +142,7 @@ html, body {
   text-align: center;
   z-index: 100;
 }
-  .lightning-options img {
+  .lightning-option img {
     width: 70px;
     display: inline-block;
     cursor: pointer;
@@ -151,12 +151,10 @@ html, body {
     color: white;
   }
 
-.textures-options {
+.textures-option {
   display: none;
   position: fixed;
   right: 0;
-  top: 30px;
-  right: 150px;
   padding: 10px;
   width: 200px;
   height: 300px;
@@ -167,7 +165,7 @@ html, body {
   z-index: 100;
   overflow-y: scroll;
 }
-  .textures-options label {
+  .textures-option label {
     display: block;
     margin: 10px 10px 10px 10px;
     padding-bottom: 10px;
@@ -176,7 +174,7 @@ html, body {
     font-size: 0.85em;
     border-bottom: 1px solid #ececec;
   }
-  .textures-options img {
+  .textures-option img {
     width: 50px;
     height: 50px;
     border-radius: 30px;
@@ -184,7 +182,7 @@ html, body {
     border: 2px solid white;
     cursor: pointer;
   }
-  .textures-options img:hover {
+  .textures-option img:hover {
     border: 2px solid #aaaaaa;
   }
   .textures {
@@ -193,10 +191,9 @@ html, body {
 
 
 .instructions-option {
+  display: none;
   position: fixed;
   right: 0;
-  top: 30px;
-  right: 30px;
   padding: 10px 10px 20px 10px;
   width: 300px;
   height: 400px;
@@ -232,6 +229,30 @@ html, body {
   }
 
 
+.download-upload-option {
+  display: none;
+  position: fixed;
+  height: auto;
+  width: auto;
+  z-index: 100;
+  background: #fff;
+  border-radius: 5px;
+}
+  .download-upload-option label {
+    display: block;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .download-upload-option label:hover {
+    background-color: #ececec;
+  }
+  .download-upload {
+    color: white;
+  }
+
+
+
 .fab {
   position: fixed;
   right: 20px;
@@ -259,4 +280,9 @@ body img, body span {
   border: none;
   cursor: pointer;
   z-index: 150;
+}
+
+.dropzone {
+  z-index: 100;
+  display: none;
 }

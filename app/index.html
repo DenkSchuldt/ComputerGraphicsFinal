@@ -10,11 +10,12 @@
 		-->
 		<title>Geometric Shaper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="./js/three.min.js"></script>
-		<script src="./js/jquery-2.1.4.min.js"></script>
-		<script src="./js/jquery-ui.min.js"></script>
-		<script src="./js/TransformControls.js"></script>
-		<script src="./js/jquery.ui.touch-punch.min.js"></script>
+		<script src="./scripts/three.min.js"></script>
+		<script src="./scripts/jquery-2.1.4.min.js"></script>
+		<script src="./scripts/jquery-ui.min.js"></script>
+		<script src="./scripts/TransformControls.js"></script>
+		<script src="./scripts/jquery.ui.touch-punch.min.js"></script>
+		<script src="./scripts/math.min.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
@@ -22,6 +23,7 @@
 	<body>
 		<nav class="navbar">
 			<label>Geometric Shaper</label>
+			<i class="fa fa-ellipsis-v download-upload"></i>
 			<i class="fa fa-info-circle instructions"></i>
 			<i class="fa fa-circle colors"></i>
 			<i class="fa fa-lightbulb-o lightning"></i>
@@ -32,6 +34,10 @@
 		<canvas id="canvas_2d"></canvas>
 		<div id="options"></div>
 
+		<div class="download-upload-option">
+			<label id="download">Download scene</label>
+			<label id="upload">Upload scene</label>
+		</div>
 		<div class="colors-option">
 			<label>Sketch and figures:</label>
 			<span class="color red"></span>
@@ -55,11 +61,11 @@
 			<span class="color black"></span>
 			<span class="color white"></span>
 		</div>
-		<div class="lightning-options">
+		<div class="lightning-option">
 			<img src="images/spotlight.png" alt="Spotlight" figure="0" id="2"/>
 			<img src="images/directional.png" alt="Directional Light" figure="0" id="3"/>
 		</div>
-		<div class="textures-options">
+		<div class="textures-option">
 			<label>Wood:</label>
 			<img src="images/textures/001.jpg" class='texture'/>
 			<img src="images/textures/002.jpg" class='texture'/>
@@ -143,10 +149,10 @@
 			<i class="pencil-cursor fa fa-pencil"></i>
 		</div>
 
-		<script src="./js/math.min.js"></script>
-		<script src="./js/general.js"></script>
-		<script src="./js/functions_canvas_2d.js"></script>
-		<script src="./js/functions_options.js"></script>
-		<script src="./js/functions_canvas_3d.js"></script>
+		<script src="./scripts/general.js"></script>
+		<script src="./scripts/menu.js"></script>
+		<script src="./scripts/canvas2d.js"></script>
+		<script src="./scripts/sketchoptions.js"></script>
+		<script src="./scripts/canvas3d.js"></script>
 	</body>
 </html>

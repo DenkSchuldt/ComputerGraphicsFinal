@@ -1,26 +1,4 @@
 
-var colors = {
-  "red": "#F44336",
-  "pink": "#E91E63",
-  "purple": "#9C27B0",
-  "deeppurple": "#673AB7",
-  "indigo": "#3F51B5",
-  "blue": "#2196F3",
-  "lightblue": "#03A9F4",
-  "cyan": "#00BCD4",
-  "teal": "#009688",
-  "green": "#4CAF50",
-  "lightgreen": "#8BC34A",
-  "lime": "#CDDC39",
-  "yellow": "#FFEB3B",
-  "amber": "#FFC107",
-  "orange": "#FF9800",
-  "deeporange": "#FF5722",
-  "brown": "#795548",
-  "gray": "#9E9E9E",
-  "black": "#000000"
-}
-
 // THRESHOLD
 var CIRCLE_VARIANCE_MAX = 40;
 var CIRCLE_VARIANCE_MIN = 2;
@@ -37,41 +15,7 @@ var points = new Array();
 var corners = new Array();
 var resampledPoints = new Array();
 
-/**
- * src: http://javascriptexample.net/extobjects81.php
- */
-Math.avg = function() {
-  var cnt, tot, i;
-  cnt = arguments.length;
-  tot = i = 0;
-  while (i < cnt) tot+= arguments[i++];
-  return tot / cnt;
-}
 
-/**
- *
- */
-function newPoint(x, y) {
-  var point = {};
-  point.x = x;
-  point.y = y;
-  return point;
-}
-
-/**
- *
- */
-function getDistance(pointA, pointB) {
-	return Math.sqrt(Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2));
-}
-
-function getMagnitud(pointA) {
-	return Math.sqrt(Math.pow(pointA.x, 2) + Math.pow(pointA.y, 2));
-}
-
-function getNormalZ(pointA, pointB, pointC){
-	return producto_cruz = (pointB.x - pointA.x)*(pointC.y - pointB.y) - (pointC.x - pointB.x)*(pointB.y - pointA.y);
-}
 
 function isConvex(){
 	var sign;
@@ -83,7 +27,6 @@ function isConvex(){
 
 	for (i = 1; i < corners.length-1; i++) {
 		var normalZ = getNormalZ(corners[i-1], corners[i], corners[i+1]);
-		console.log(normalZ);
 		if (sign == 1 && normalZ <= 0){
 			return false;
 		}else if(sign == 0 && normalZ > 0){
@@ -92,7 +35,6 @@ function isConvex(){
 	}
 
 	var normalZ = getNormalZ(corners[1], corners[2], corners[0]);
-	console.log(normalZ);
 	if (sign == 1 && normalZ <= 0){
 		return false;
 	}else if(sign == 0 && normalZ > 0){
@@ -346,9 +288,19 @@ $('#canvas_2d').on("mouseup touchend", function(e){
     }
     if ((lastPoint.y + $('#options').height()) > $(window).height()) {
       $('#options').css('top', ($(window).height()-$('#options').height())+'px');
-    }  
+    }
   }
 });
+
+/**
+ *
+ */
+function clearCanvas2D(){
+	points = new Array();
+	resampledPoints = new Array();
+	redraw(1);
+}
+
 
 /**
  *
@@ -364,16 +316,6 @@ function init() {
     $("#canvas_2d").attr("height", $("#canvas_2d").height());
     redraw(2);
   });
-}
-
-
-/**
- *
- */
-function clearCanvas2D(){
-	points = new Array();
-	resampledPoints = new Array();
-	redraw(1);
 }
 
 init();
