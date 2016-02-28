@@ -266,7 +266,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
-		pyramid.name = "pyramid1";
+		pyramid.name = "pyramid2";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}else if (triangleType == 3){
@@ -276,7 +276,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
-		pyramid.name = "pyramid2";
+		pyramid.name = "pyramid3";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}else if (triangleType == 1){
@@ -286,7 +286,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
-		pyramid.name = "pyramid3";
+		pyramid.name = "pyramid1";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}
@@ -636,35 +636,97 @@ $( "#saveScene" ).click(function() {
 
 function loadScene(event){
 	//STILL IN DEVELOPMENT
-
-	scene = new THREE.Scene();
 	
 	input = document.getElementById('fileinput');
 	
 	file = input.files[0];
 	fr = new FileReader();
-	//fr.onload = receivedText;
-	fr.readAsDataURL(file);
-	/*var json = (localStorage.getItem('scene'));
-	*/
+	fr.onload = receivedText;
+	fr.readAsText(file);
 
-	var loader = new THREE.ObjectLoader();
-	loader.load(fr.result, function (object) {
+}
 
-		console.log('adding object to scene');
-		scene.add(object);
-	});
+function receivedText(e) {
+	lines = e.target.result;
+	console.log(lines);
+	var jsonData = JSON.parse(lines); 
+	console.log('objetos ' + jsonData.savedObjects.length);
+	var ready = 0;
+	for (i = 0; i < jsonData.savedObjects.length; i++){
+		ready = 0;
+	
+		if (jsonData.savedObjects[i].type == "pyramid1"){
+			var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
+			var material = new THREE.MeshLambertMaterial( {color: main_color} );
+			var mesh = new THREE.Mesh( geometry, material );
+			mesh.name = "pyramid1";
+			ready = 1;
+		}else if(jsonData.savedObjects[i].type == "sphere"){
+			var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+			var material = new THREE.MeshLambertMaterial({color: main_color});
+			var mesh = new THREE.Mesh(geometry, material);
+			mesh.name = "sphere";
+			ready = 1;
+		}else if(jsonData.savedObjects[i].type == "lightbulb"){
+			var mesh = new THREE.Object3D();
+
+			var light = new THREE.PointLight( 0xffffff, 2, 100 );
+
+			var geometryTuck = new THREE.CylinderGeometry( 0.1, 0.1, 0.5, 32, 1 );
+			var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
+			var tuck = new THREE.Mesh( geometryTuck, materialTuck );
+
+			var geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
+			var material = new THREE.MeshBasicMaterial({color: main_color});
+			var sphere = new THREE.Mesh(geometry, material);
+
+			tuck.position.set(0, 0.15, 0)
+			light.position.set(0, 0, 0)
+			sphere.position.set(0, 0, 0)
+
+			mesh.add(tuck);
+			mesh.add(sphere);
+			mesh.add(light);
+			mesh.name = "lightbulb";
+			
+			ready = 1;
 		
-	//console.log(URL.createObjectURL(event.target.files[0]));
-	//var loader = new THREE.ObjectLoader();
+		}
+		
+		if(ready){
+			mesh.position.x = jsonData.savedObjects[i].positionX;
+			mesh.position.y = jsonData.savedObjects[i].positionY;
+			mesh.position.z = jsonData.savedObjects[i].positionZ;
+			mesh.rotation.x = jsonData.savedObjects[i].rotationX;
+			mesh.rotation.y = jsonData.savedObjects[i].rotationY;
+			mesh.rotation.z = jsonData.savedObjects[i].rotationZ;
+			mesh.scale.x = jsonData.savedObjects[i].scaleX;
+			mesh.scale.y = jsonData.savedObjects[i].scaleY;
+			mesh.scale.z = jsonData.savedObjects[i].scaleZ;
+			
+			scene.add( mesh );
+			objects.push(mesh);
+		}
+		
+
+	}
 	
-	//scene = loader.parse(URL.createObjectURL(event.target.files[0]));*/
-	/*var myloader = new THREE.JSONLoader();
-	
-	myloader.load(URL.createObjectURL(event.target.files[0]), function(geometry,material){
-		mesh = new THREE.Mesh(geometry,material);
-		scene.add(mesh);
-	})*/
+	for (i = 0; i < objects.length; i++){
+		if (objects[i].children.length > 0){
+			for (j = 0; j < objects[i].children.length; j++){
+				try{
+					objects[i].children[j].material.needsUpdate = true;
+				}catch(err){
+
+				}
+			}
+		}
+		try{
+			objects[i].material.needsUpdate = true;
+		}catch(err){
+
+		}
+	}
 }
 
 initialize();
