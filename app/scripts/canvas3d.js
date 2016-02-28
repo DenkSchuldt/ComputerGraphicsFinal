@@ -189,6 +189,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		cube.position.x = pos.x;
 		cube.position.z = pos.z;
 		cube.position.y = 0;
+		cube.name = "cube";
 		scene.add(cube);
 		objects.push(cube);
 	}else if (quadrangleType == 3){
@@ -201,8 +202,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid.position.z = 0;
 		pyramid.position.y = 0;
 		pyramid.position.y += 1;
-		scene.add( pyramid );
-		objects.push(pyramid);
+
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
 		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid2 = new THREE.Mesh( geometry, material );
@@ -218,7 +218,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		rombo.position.x = pos.x;
 		rombo.position.z = pos.z;
 		rombo.position.y = 0;
-
+		rombo.name = "rombo";
 		scene.add(rombo);
 		objects.push(rombo);
 	}else if (quadrangleType == 4){
@@ -229,6 +229,7 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		plane.position.z = pos.z;
 		plane.position.y = 0;
 		plane.rotation.x += 3.1416/2;
+		plane.name = "plane";
 		scene.add( plane );
 		objects.push(plane);
 	}
@@ -265,6 +266,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
+		pyramid.name = "pyramid1";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}else if (triangleType == 3){
@@ -274,6 +276,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
+		pyramid.name = "pyramid2";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}else if (triangleType == 1){
@@ -283,6 +286,7 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
+		pyramid.name = "pyramid3";
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}
@@ -319,6 +323,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		sphere.position.x = pos.x;
 		sphere.position.z = pos.z;
 		sphere.position.y = 0;
+		sphere.name = "sphere";
 		scene.add(sphere);
 		objects.push(sphere);
 	}else if (circleType == 2){
@@ -344,6 +349,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		lightbulb.position.x = pos.x;
 		lightbulb.position.z = pos.z;
 		lightbulb.position.y = 6;
+		lightbulb.name = "lightbulb";
 		scene.add(lightbulb);
 		objects.push(lightbulb);
 		for (i = 0; i < objects.length; i++){
@@ -381,6 +387,7 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		sunRay.position.x = pos.x;
 		sunRay.position.z = pos.z;
 		sunRay.position.y = 6;
+		sunRay.name = "sunRay";
 		scene.add(sunRay);
 		objects.push(sunRay);
 		for (i = 0; i < objects.length; i++){
@@ -481,6 +488,7 @@ function addTexture(e, ui) {
 						obj.parent.children[j].material.map = null;
 					} else {
 						obj.parent.children[j].material.map = THREE.ImageUtils.loadTexture( texture );
+						obj.parent.children[j].material.map.name = texture;
 					}
 					obj.parent.children[j].material.needsUpdate = true;
 				}catch(err){
@@ -491,6 +499,7 @@ function addTexture(e, ui) {
 				obj.material.map = null;
 			} else {
 				obj.material.map = THREE.ImageUtils.loadTexture( texture );
+				obj.material.map.name = texture;
 			}
 			obj.material.needsUpdate = true;
 		}
@@ -556,6 +565,106 @@ function animate() {
 	requestAnimationFrame(animate);
 	control.update();
 	renderer.render(scene, camera);
+}
+
+$( "#saveScene" ).click(function() {
+	
+	var saveData = { 
+		savedObjects : [] 
+	};
+	
+	var saveData = {};
+	var savedObjects = []
+
+
+	saveData.savedObjects = savedObjects;
+
+	console.log("before for");
+	for (i = 0; i < objects.length; i++){
+		console.log("before try");
+		try{
+			console.log(objects[i]);
+			if (objects[i].children.length == 0){
+				var data = { 
+					"type" : objects[i].name,
+					"color" : objects[i].material.color.getHexString(),
+					"positionX" : objects[i].position.x,
+					"positionY" : objects[i].position.y,
+					"positionZ" : objects[i].position.z,
+					"rotationX" : objects[i].rotation.x,
+					"rotationY" : objects[i].rotation.y,
+					"rotationZ" : objects[i].rotation.z,
+					"scaleX" : objects[i].scale.x,
+					"scaleY" : objects[i].scale.y,
+					"scaleZ" : objects[i].scale.z
+				};
+				saveData.savedObjects.push(data);
+				try{
+					saveData.savedObjects[i].texture = objects[i].material.map.name;
+				}catch(err2){
+					saveData.savedObjects[i].texture = null;
+				}
+			}else{
+				var data = { 
+					"type" : objects[i].name,
+					"color" : objects[i].children[0].material.color.getHexString(),
+					"positionX" : objects[i].position.x,
+					"positionY" : objects[i].position.y,
+					"positionZ" : objects[i].position.z,
+					"rotationX" : objects[i].rotation.x,
+					"rotationY" : objects[i].rotation.y,
+					"rotationZ" : objects[i].rotation.z,
+					"scaleX" : objects[i].scale.x,
+					"scaleY" : objects[i].scale.y,
+					"scaleZ" : objects[i].scale.z
+				};
+				saveData.savedObjects.push(data);
+				try{
+					saveData.savedObjects[i].texture = objects[i].children[0].material.map.name;
+				}catch(err2){
+					saveData.savedObjects[i].texture = null;
+				}
+			}
+			console.log('pushed');
+		}catch(err){
+		}
+	}
+	
+	document.location = 'data:Application/octet-stream,' + JSON.stringify(saveData);
+	
+});
+
+function loadScene(event){
+	//STILL IN DEVELOPMENT
+
+	scene = new THREE.Scene();
+	
+	input = document.getElementById('fileinput');
+	
+	file = input.files[0];
+	fr = new FileReader();
+	//fr.onload = receivedText;
+	fr.readAsDataURL(file);
+	/*var json = (localStorage.getItem('scene'));
+	*/
+
+	var loader = new THREE.ObjectLoader();
+	loader.load(fr.result, function (object) {
+
+		console.log('adding object to scene');
+		scene.add(object);
+	});
+		
+	//console.log(URL.createObjectURL(event.target.files[0]));
+	//var loader = new THREE.ObjectLoader();
+	
+	//scene = loader.parse(URL.createObjectURL(event.target.files[0]));*/
+	/*var myloader = new THREE.JSONLoader();
+	
+	myloader.load(URL.createObjectURL(event.target.files[0]), function(geometry,material){
+		mesh = new THREE.Mesh(geometry,material);
+		scene.add(mesh);
+	})*/
 }
 
 initialize();

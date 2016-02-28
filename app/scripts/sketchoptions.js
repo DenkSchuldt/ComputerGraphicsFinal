@@ -97,3 +97,4 @@ function showQuadrangleOptions(){
 function clearOptions(){
 	document.getElementById("options").innerHTML = "";
 }
+
