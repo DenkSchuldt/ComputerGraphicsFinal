@@ -567,7 +567,7 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-$( "#saveScene" ).click(function() {
+$( "#download" ).click(function() {
 	
 	var saveData = { 
 		savedObjects : [] 
@@ -636,7 +636,7 @@ $( "#saveScene" ).click(function() {
 
 function loadScene(event){
 	//STILL IN DEVELOPMENT
-	
+	clearScene();
 	input = document.getElementById('fileinput');
 	
 	file = input.files[0];
@@ -657,15 +657,43 @@ function receivedText(e) {
 	
 		if (jsonData.savedObjects[i].type == "pyramid1"){
 			var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
-			var material = new THREE.MeshLambertMaterial( {color: main_color} );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
 			var mesh = new THREE.Mesh( geometry, material );
 			mesh.name = "pyramid1";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
+		}else if(jsonData.savedObjects[i].type == "pyramid2"){
+			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
+			var mesh = new THREE.Mesh( geometry, material );
+			mesh.name = "pyramid2";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
+		}else if (jsonData.savedObjects[i].type == "pyramid3"){
+			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
+			var mesh = new THREE.Mesh( geometry, material );;
+			mesh.name = "pyramid3";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
 			ready = 1;
 		}else if(jsonData.savedObjects[i].type == "sphere"){
 			var geometry = new THREE.SphereGeometry( 1, 32, 32 );
-			var material = new THREE.MeshLambertMaterial({color: main_color});
+			var material = new THREE.MeshLambertMaterial({color: '#' + jsonData.savedObjects[i].color});
 			var mesh = new THREE.Mesh(geometry, material);
 			mesh.name = "sphere";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
 			ready = 1;
 		}else if(jsonData.savedObjects[i].type == "lightbulb"){
 			var mesh = new THREE.Object3D();
@@ -673,17 +701,25 @@ function receivedText(e) {
 			var light = new THREE.PointLight( 0xffffff, 2, 100 );
 
 			var geometryTuck = new THREE.CylinderGeometry( 0.1, 0.1, 0.5, 32, 1 );
-			var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
+			var materialTuck = new THREE.MeshBasicMaterial( {color: '#' + jsonData.savedObjects[i].color} );
 			var tuck = new THREE.Mesh( geometryTuck, materialTuck );
 
 			var geometry = new THREE.SphereGeometry( 0.2, 32, 32 );
-			var material = new THREE.MeshBasicMaterial({color: main_color});
+			var material = new THREE.MeshBasicMaterial({color: '#' + jsonData.savedObjects[i].color});
 			var sphere = new THREE.Mesh(geometry, material);
 
 			tuck.position.set(0, 0.15, 0)
 			light.position.set(0, 0, 0)
 			sphere.position.set(0, 0, 0)
-
+			
+			if(jsonData.savedObjects[i].texture != null){
+				tuck.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				sphere.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				tuck.material.map.name = jsonData.savedObjects[i].texture;
+				sphere.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			
+			
 			mesh.add(tuck);
 			mesh.add(sphere);
 			mesh.add(light);
@@ -691,6 +727,79 @@ function receivedText(e) {
 			
 			ready = 1;
 		
+		}else if(jsonData.savedObjects[i].type == "sunRay"){
+			var mesh = new THREE.Object3D();
+
+			var light = new THREE.DirectionalLight( 0xffffff, 1 );
+
+			var geometryTuck = new THREE.CylinderGeometry( 0.25, 0.25, 0.4, 32, 1 );
+			var materialTuck = new THREE.MeshBasicMaterial( {color: '#' + jsonData.savedObjects[i].color} );
+			var tuck = new THREE.Mesh( geometryTuck, materialTuck );
+
+			tuck.position.set(0, 0, 0)
+			light.position.set(0, 0, 0)
+
+			mesh.add(tuck);
+			mesh.add(light);
+
+			mesh.name = "sunRay";
+			if(jsonData.savedObjects[i].texture != null){
+				tuck.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				tuck.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
+		}else if (jsonData.savedObjects[i].type == "cube"){
+			var geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
+			var material = new THREE.MeshLambertMaterial({color: '#' + jsonData.savedObjects[i].color});
+			var mesh = new THREE.Mesh(geometry, material);
+			mesh.name = "cube";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
+		}else if (jsonData.savedObjects[i].type == "rombo"){
+			var mesh = new THREE.Object3D();
+
+			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
+			var pyramid = new THREE.Mesh( geometry, material );
+			pyramid.position.x = 0;
+			pyramid.position.z = 0;
+			pyramid.position.y = 0;
+			pyramid.position.y += 1;
+
+			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
+			var pyramid2 = new THREE.Mesh( geometry, material );
+			pyramid2.position.x = 0;
+			pyramid2.position.z = 0;
+			pyramid2.position.y = 0;
+			pyramid2.rotation.x += 3.1416;
+			pyramid2.position.y -= 1;
+
+			mesh.add(pyramid);
+			mesh.add(pyramid2);
+
+			mesh.name = "rombo";
+			if(jsonData.savedObjects[i].texture != null){
+				pyramid.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				pyramid2.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				pyramid.material.map.name = jsonData.savedObjects[i].texture;
+				pyramid2.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
+		}else if (jsonData.savedObjects[i].type == "plane"){
+			var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
+			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color, side: THREE.DoubleSide} );
+			var mesh = new THREE.Mesh( geometry, material );
+
+			mesh.name = "plane";
+			if(jsonData.savedObjects[i].texture != null){
+				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
+				mesh.material.map.name = jsonData.savedObjects[i].texture;
+			}
+			ready = 1;
 		}
 		
 		if(ready){
@@ -727,7 +836,19 @@ function receivedText(e) {
 
 		}
 	}
+	$( "#fileinput" ).val('');
 }
+
+function clearScene(){
+	for (i = 0; i < objects.length; i++){
+		scene.remove(objects[i]);
+	}
+	objects = [];
+}
+
+$( "#clear_scene" ).click(function() {
+	clearScene();
+});
 
 initialize();
 animate();
