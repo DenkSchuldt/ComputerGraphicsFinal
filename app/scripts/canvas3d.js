@@ -568,24 +568,21 @@ function animate() {
 }
 
 $( "#download" ).click(function() {
-	
-	var saveData = { 
-		savedObjects : [] 
+	closeMenuOptions('*');
+	var saveData = {
+		savedObjects : []
 	};
-	
+
 	var saveData = {};
 	var savedObjects = []
 
 
 	saveData.savedObjects = savedObjects;
 
-	console.log("before for");
 	for (i = 0; i < objects.length; i++){
-		console.log("before try");
 		try{
-			console.log(objects[i]);
 			if (objects[i].children.length == 0){
-				var data = { 
+				var data = {
 					"type" : objects[i].name,
 					"color" : objects[i].material.color.getHexString(),
 					"positionX" : objects[i].position.x,
@@ -605,7 +602,7 @@ $( "#download" ).click(function() {
 					saveData.savedObjects[i].texture = null;
 				}
 			}else{
-				var data = { 
+				var data = {
 					"type" : objects[i].name,
 					"color" : objects[i].children[0].material.color.getHexString(),
 					"positionX" : objects[i].position.x,
@@ -629,32 +626,31 @@ $( "#download" ).click(function() {
 		}catch(err){
 		}
 	}
-	
+
 	document.location = 'data:Application/octet-stream,' + JSON.stringify(saveData);
-	
+
 });
 
 function loadScene(event){
 	//STILL IN DEVELOPMENT
 	clearScene();
 	input = document.getElementById('fileinput');
-	
 	file = input.files[0];
 	fr = new FileReader();
 	fr.onload = receivedText;
 	fr.readAsText(file);
-
+	$('#upload-form').fadeOut('fast');
 }
 
 function receivedText(e) {
 	lines = e.target.result;
 	console.log(lines);
-	var jsonData = JSON.parse(lines); 
+	var jsonData = JSON.parse(lines);
 	console.log('objetos ' + jsonData.savedObjects.length);
 	var ready = 0;
 	for (i = 0; i < jsonData.savedObjects.length; i++){
 		ready = 0;
-	
+
 		if (jsonData.savedObjects[i].type == "pyramid1"){
 			var geometry = new THREE.CylinderGeometry( 1, 1, 2, 3, 1 );
 			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
@@ -711,22 +707,22 @@ function receivedText(e) {
 			tuck.position.set(0, 0.15, 0)
 			light.position.set(0, 0, 0)
 			sphere.position.set(0, 0, 0)
-			
+
 			if(jsonData.savedObjects[i].texture != null){
 				tuck.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				sphere.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				tuck.material.map.name = jsonData.savedObjects[i].texture;
 				sphere.material.map.name = jsonData.savedObjects[i].texture;
 			}
-			
-			
+
+
 			mesh.add(tuck);
 			mesh.add(sphere);
 			mesh.add(light);
 			mesh.name = "lightbulb";
-			
+
 			ready = 1;
-		
+
 		}else if(jsonData.savedObjects[i].type == "sunRay"){
 			var mesh = new THREE.Object3D();
 
@@ -801,7 +797,7 @@ function receivedText(e) {
 			}
 			ready = 1;
 		}
-		
+
 		if(ready){
 			mesh.position.x = jsonData.savedObjects[i].positionX;
 			mesh.position.y = jsonData.savedObjects[i].positionY;
@@ -812,14 +808,14 @@ function receivedText(e) {
 			mesh.scale.x = jsonData.savedObjects[i].scaleX;
 			mesh.scale.y = jsonData.savedObjects[i].scaleY;
 			mesh.scale.z = jsonData.savedObjects[i].scaleZ;
-			
+
 			scene.add( mesh );
 			objects.push(mesh);
 		}
-		
+
 
 	}
-	
+
 	for (i = 0; i < objects.length; i++){
 		if (objects[i].children.length > 0){
 			for (j = 0; j < objects[i].children.length; j++){
@@ -845,10 +841,6 @@ function clearScene(){
 	}
 	objects = [];
 }
-
-$( "#clear_scene" ).click(function() {
-	clearScene();
-});
 
 initialize();
 animate();

@@ -35,7 +35,7 @@ html, body {
     height: 100%;
     cursor: pointer;
     float: right;
-    padding: 0 10px;
+    padding: 0 15px;
   }
   .navbar i:hover {
     background-color: #00838F;
@@ -282,7 +282,47 @@ body img, body span {
   z-index: 150;
 }
 
-.dropzone {
-  z-index: 100;
+#upload-form {
   display: none;
 }
+  #upload-form div {
+    z-index: 100;
+    background-color: rgba(0,0,0,0.1);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  #upload-form input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  #upload-form label {
+    width: 600px;
+    height: 400px;
+    background: #E0F7FA;
+    text-align: center;
+    line-height: 400px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-top: -200px;
+    margin-left: -300px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid #9E9E9E;
+    z-index: 100;
+  }
+  #upload-form label:hover {
+    border: 2px dashed #9E9E9E;
+  }
+    #upload-form label i {
+      font-size: 3em;
+      margin-right: 20px;
+      vertical-align: middle;
+    }

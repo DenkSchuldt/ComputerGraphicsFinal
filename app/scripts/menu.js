@@ -64,9 +64,9 @@ function closeMenuOptions(ignore) {
       $('.instructions-option').toggle('drop');
     }
   }
-  if(ignore !== 'download-upload-option'){
-    if($('download-upload-option').is(':visible')) {
-      $('download-upload-option').toggle('drop');
+  if(ignore !== '.download-upload-option'){
+    if($('.download-upload-option').is(':visible')) {
+      $('.download-upload-option').toggle('drop');
     }
   }
 }
@@ -191,6 +191,17 @@ function downloadUploadMenuOption() {
     }
     $('.download-upload-option').toggle('drop');
     closeMenuOptions('.download-upload-option');
+  });
+  $("#clear_scene").click(function() {
+  	clearScene();
+    closeMenuOptions('*');
+  });
+  $("#upload").click(function() {
+  	$('#upload-form').fadeIn('fast');
+    closeMenuOptions('*');
+  });
+  $('#overlay').click(function(){
+    $('#upload-form').fadeOut('fast');
   });
 }
 

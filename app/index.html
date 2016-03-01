@@ -25,7 +25,6 @@
 			<label>Geometric Shaper</label>
 			<i class="fa fa-ellipsis-v download-upload"></i>
 			<i class="fa fa-info-circle instructions"></i>
-			<i><input id="fileinput" type='file' accept='text/plain' onchange='loadScene(event)'></i>
 			<i class="fa fa-circle colors"></i>
 			<i class="fa fa-lightbulb-o lightning"></i>
 			<i class="textures">Textures</i>
@@ -34,6 +33,14 @@
 		<div id="canvas_3d"></div>
 		<canvas id="canvas_2d"></canvas>
 		<div id="options"></div>
+		<div id="upload-form">
+			<div id="overlay"></div>
+			<input id='fileinput' type='file' accept='*' onchange='loadScene(event)'>
+			<label for='fileinput'>
+				<i class="fa fa-upload"></i>
+				Coose or drop a file...
+			</label>
+		</div>
 
 		<div class="download-upload-option">
 			<label id="clear_scene">Clear scene</label>
