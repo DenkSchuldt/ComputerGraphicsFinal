@@ -18,30 +18,25 @@ var resampledPoints = new Array();
 
 
 function isConvex(){
-	var sign;
-	if (getNormalZ(corners[0], corners[1], corners[2]) > 0){
-		sign = 1;
-	}else{
-		sign = 0;
-	}
-
-	for (i = 1; i < corners.length-1; i++) {
-		var normalZ = getNormalZ(corners[i-1], corners[i], corners[i+1]);
-		if (sign == 1 && normalZ <= 0){
-			return false;
-		}else if(sign == 0 && normalZ > 0){
-			return false;
+	if (corners.length == 3){
+		var normalZ1 = getNormalZ(corners[0], corners[1], corners[2]);
+		var normalZ2 = getNormalZ(corners[2], corners[0], corners[1]);
+		var normalZ3 = getNormalZ(corners[1], corners[2], corners[0]);
+		if((normalZ1 > 0 && normalZ2 > 0 && normalZ3 > 0) || (normalZ1 < 0 && normalZ2 < 0 && normalZ3 < 0)){
+			return true;
+		}
+		
+	}else if(corners.length == 4){
+		var normalZ1 = getNormalZ(corners[0], corners[1], corners[2]);
+		var normalZ2 = getNormalZ(corners[1], corners[2], corners[3]);
+		var normalZ3 = getNormalZ(corners[3], corners[0], corners[1]);
+		var normalZ4 = getNormalZ(corners[2], corners[3], corners[0]);
+		if((normalZ1 > 0 && normalZ2 > 0 && normalZ3 > 0 && normalZ4 > 0) || (normalZ1 < 0 && normalZ2 < 0 && normalZ3 < 0 && normalZ4 < 0)){
+			return true;
 		}
 	}
-
-	var normalZ = getNormalZ(corners[1], corners[2], corners[0]);
-	if (sign == 1 && normalZ <= 0){
-		return false;
-	}else if(sign == 0 && normalZ > 0){
-		return false;
-	}
-
-	return true;
+	
+	return false;
 }
 
 /**
