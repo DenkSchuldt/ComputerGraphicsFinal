@@ -47,6 +47,7 @@ function initialize() {
 	var ambientLight = new THREE.AmbientLight(0x999999);
 	scene.add(ambientLight);
 	renderer.shadowMapEnabled = true;
+	renderer.shadowMapSoft = true;
 	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 }
@@ -189,6 +190,8 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		cube.position.x = pos.x;
 		cube.position.z = pos.z;
 		cube.position.y = 0;
+		cube.castShadow = true;
+		cube.receiveShadow = true;
 		cube.name = "cube";
 		scene.add(cube);
 		objects.push(cube);
@@ -202,7 +205,9 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid.position.z = 0;
 		pyramid.position.y = 0;
 		pyramid.position.y += 1;
-
+		pyramid.castShadow = true;
+		pyramid.receiveShadow = true;
+		
 		var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
 		var material = new THREE.MeshLambertMaterial( {color: main_color} );
 		var pyramid2 = new THREE.Mesh( geometry, material );
@@ -211,13 +216,17 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		pyramid2.position.y = 0;
 		pyramid2.rotation.x += 3.1416;
 		pyramid2.position.y -= 1;
-
+		pyramid2.castShadow = true;
+		pyramid2.receiveShadow = true;
+		
 		rombo.add(pyramid);
 		rombo.add(pyramid2);
 
 		rombo.position.x = pos.x;
 		rombo.position.z = pos.z;
 		rombo.position.y = 0;
+		rombo.castShadow = true;
+		rombo.receiveShadow = true;
 		rombo.name = "rombo";
 		scene.add(rombo);
 		objects.push(rombo);
@@ -228,8 +237,10 @@ function drawQuadrangleByPosition(quadrangleType, imagex, imagey){
 		plane.position.x = pos.x;
 		plane.position.z = pos.z;
 		plane.position.y = 0;
-		plane.rotation.x += 3.1416/2;
+		plane.rotation.x -= 3.1416/2;
 		plane.name = "plane";
+		plane.castShadow = true;
+		plane.receiveShadow = true;
 		scene.add( plane );
 		objects.push(plane);
 	}
@@ -266,6 +277,8 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
+		pyramid.castShadow = true;
+		pyramid.receiveShadow = true;
 		pyramid.name = "pyramid2";
 		scene.add( pyramid );
 		objects.push(pyramid);
@@ -277,6 +290,8 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
 		pyramid.name = "pyramid3";
+		pyramid.castShadow = true;
+		pyramid.receiveShadow = true;
 		scene.add( pyramid );
 		objects.push(pyramid);
 	}else if (triangleType == 1){
@@ -286,6 +301,8 @@ function drawTriangleByPosition(triangleType, imagex, imagey){
 		pyramid.position.x = pos.x;
 		pyramid.position.z = pos.z;
 		pyramid.position.y = 0;
+		pyramid.castShadow = true;
+		pyramid.receiveShadow = true;
 		pyramid.name = "pyramid1";
 		scene.add( pyramid );
 		objects.push(pyramid);
@@ -323,6 +340,8 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		sphere.position.x = pos.x;
 		sphere.position.z = pos.z;
 		sphere.position.y = 0;
+		sphere.castShadow = true;
+		sphere.receiveShadow = true;
 		sphere.name = "sphere";
 		scene.add(sphere);
 		objects.push(sphere);
@@ -330,7 +349,9 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		var lightbulb = new THREE.Object3D();
 
 		var light = new THREE.PointLight( 0xffffff, 2, 100 );
-
+		light.castShadow = true;
+		light.shadowDarkness = 0.7;
+		
 		var geometryTuck = new THREE.CylinderGeometry( 0.1, 0.1, 0.5, 32, 1 );
 		var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
 		var tuck = new THREE.Mesh( geometryTuck, materialTuck );
@@ -372,7 +393,19 @@ function drawSphereByPosition(circleType, imagex, imagey){
 		var sunRay = new THREE.Object3D();
 
 		var light = new THREE.DirectionalLight( 0xffffff, 1 );
-
+		light.castShadow = true;
+		light.shadowDarkness = 0.7;
+        light.shadowCameraVisible = false;
+        light.shadowCameraNear = 1;
+        light.shadowCameraFar = 1024;
+        light.shadowCameraLeft = -15;
+        light.shadowCameraRight = 15;
+        light.shadowCameraTop = 15;
+        light.shadowCameraBottom = -15;
+        light.shadowMapWidth = 2048;
+        light.shadowMapHeight = 2048;
+		light.position.set( pos.x, 6, pos.z);
+		
 		var geometryTuck = new THREE.CylinderGeometry( 0.25, 0.25, 0.4, 32, 1 );
 		var materialTuck = new THREE.MeshBasicMaterial( {color: main_color} );
 		var tuck = new THREE.Mesh( geometryTuck, materialTuck );
@@ -660,6 +693,8 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if(jsonData.savedObjects[i].type == "pyramid2"){
 			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
@@ -670,6 +705,8 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if (jsonData.savedObjects[i].type == "pyramid3"){
 			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 3, 1 );
@@ -680,6 +717,8 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if(jsonData.savedObjects[i].type == "sphere"){
 			var geometry = new THREE.SphereGeometry( 1, 32, 32 );
@@ -690,12 +729,16 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if(jsonData.savedObjects[i].type == "lightbulb"){
 			var mesh = new THREE.Object3D();
 
 			var light = new THREE.PointLight( 0xffffff, 2, 100 );
-
+			light.castShadow = true;
+			light.shadowDarkness = 0.7;
+			
 			var geometryTuck = new THREE.CylinderGeometry( 0.1, 0.1, 0.5, 32, 1 );
 			var materialTuck = new THREE.MeshBasicMaterial( {color: '#' + jsonData.savedObjects[i].color} );
 			var tuck = new THREE.Mesh( geometryTuck, materialTuck );
@@ -727,7 +770,18 @@ function receivedText(e) {
 			var mesh = new THREE.Object3D();
 
 			var light = new THREE.DirectionalLight( 0xffffff, 1 );
-
+			light.castShadow = true;
+			light.shadowDarkness = 0.7;
+			light.shadowCameraNear = 1;
+			light.shadowCameraFar = 1024;
+			light.shadowCameraLeft = -15;
+			light.shadowCameraRight = 15;
+			light.shadowCameraTop = 15;
+			light.shadowCameraBottom = -15;
+			light.shadowMapWidth = 2048;
+			light.shadowMapHeight = 2048;
+			light.position.set( jsonData.savedObjects[i].positionX, 6, jsonData.savedObjects[i].positionZ);
+			
 			var geometryTuck = new THREE.CylinderGeometry( 0.25, 0.25, 0.4, 32, 1 );
 			var materialTuck = new THREE.MeshBasicMaterial( {color: '#' + jsonData.savedObjects[i].color} );
 			var tuck = new THREE.Mesh( geometryTuck, materialTuck );
@@ -753,6 +807,8 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if (jsonData.savedObjects[i].type == "rombo"){
 			var mesh = new THREE.Object3D();
@@ -764,7 +820,9 @@ function receivedText(e) {
 			pyramid.position.z = 0;
 			pyramid.position.y = 0;
 			pyramid.position.y += 1;
-
+			pyramid.castShadow = true;
+			pyramid.receiveShadow = true;
+			
 			var geometry = new THREE.CylinderGeometry( 0, 1, 2, 4, 1 );
 			var material = new THREE.MeshLambertMaterial( {color: '#' + jsonData.savedObjects[i].color} );
 			var pyramid2 = new THREE.Mesh( geometry, material );
@@ -773,7 +831,9 @@ function receivedText(e) {
 			pyramid2.position.y = 0;
 			pyramid2.rotation.x += 3.1416;
 			pyramid2.position.y -= 1;
-
+			pyramid2.castShadow = true;
+			pyramid2.receiveShadow = true;
+			
 			mesh.add(pyramid);
 			mesh.add(pyramid2);
 
@@ -784,6 +844,8 @@ function receivedText(e) {
 				pyramid.material.map.name = jsonData.savedObjects[i].texture;
 				pyramid2.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}else if (jsonData.savedObjects[i].type == "plane"){
 			var geometry = new THREE.PlaneGeometry( 3, 3, 8 );
@@ -795,6 +857,8 @@ function receivedText(e) {
 				mesh.material.map = THREE.ImageUtils.loadTexture( jsonData.savedObjects[i].texture );
 				mesh.material.map.name = jsonData.savedObjects[i].texture;
 			}
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 			ready = 1;
 		}
 
